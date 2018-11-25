@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>SFTrade Documentation</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+  <div class="main-content">
+
+    <div class="header-main">Stats - System</div>
+
+    <div class="toc-link"><a href="index.html">Table of Contents</a></div>
+
+    <span class="header-section">Overview</span>
+    <div class="section">
+      This interface will show you hits not connected with regular trades. Interface more simple because we not need to return traffic to this type of trades or setup\count forces..
+      Some system trades have no "in" stats because we can't count it by virtue of the features.
+
+      <br><br>
+
+      <ul>
+        <b>no-cookie -</b> <span>Clicks without cookies.</span><br>
+        <b>no-image -</b> <span>Clicks for browsers which don't load images. (Work only with images.php tool: <a href="global-settings.html">Global Settings</a> - "Filter image.php")</span><br>
+        <b>no-referrer -</b> <span>Raw in and clicks for surfers with empty HTTP_REFERER</span><br>
+        <b>non-trade -</b> <span>Raw in and clicks for surfers with referrer which doesn't match any NON system trader.</span><br>
+        <b>not-counted -</b> <span>Clicks exciting max clicks amount (<a href="global-settings.html">Global Settings</a> - "Count Clicks") from an individual surfer, (additional clicks) will be tallied as this system trade.</span><br>
+        <b>search-engine -</b> <span>Raw in and clicks for surfers which referred from <a href="search-engines.html">search engines</a> list.</span><br>
+        <b>spiders -</b> <span>Raw in and clicks for browsers\hosts with useragents matched <a href="spiders.html">spiders</a> list or EMTY useragent data (strlen(useragent) <= 25).</span><br>
+        <b>unknown -</b> <span>Raw in and clicks for browsers\hosts with bad in and click signature (Cookie, File or Cache data key).</span><br>
+      </ul>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
