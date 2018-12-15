@@ -1,3 +1,8 @@
+## About and Links
+
+**STrade** - free open-source traffic trade script. What is mean "traffic trade script" you can [read here](http://sflash.biz/#solutions).
+
+
 Original repo: https://github.com/jmbsoft/TradeX
 
 
@@ -13,7 +18,7 @@ Online Docs: http://sflash.biz/sft-dist-pub/docs/
 Contribute and contact if you need domain keys for automatically script installation. Or use simple manual installation [described below](#manual-installation).
 
 
-Sorry, but original TradeX script is not usable. It have not accurate traffic out algorithms. In my case script works with 400k site without troubles and with 50+ another smaller or similar sites on same server.
+Sorry, but original TradeX script is not usable if you try it from original repo. It have lot errors and deprecations, and most importantly have no accurate traffic out algorithms. In my case script works with 400k site without troubles and with 50+ another smaller or similar sites on same server with classic outlist with some additional improvements.
 
 
 ## Ok. My Role:
