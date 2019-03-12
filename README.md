@@ -18,10 +18,10 @@ Online Docs: http://sflash.biz/sft-dist-pub/docs/
 Contribute and contact if you need domain keys for automatically script installation. Or use simple manual installation [described below](#manual-installation).
 
 
-Sorry, but original TradeX script is not usable if you try it from original repo. It have lot errors and deprecations, and most importantly have no accurate traffic out algorithms. In my case script works with 400k site without troubles and with 50+ another smaller or similar sites on same server with classic outlist with some additional improvements.
+Sorry, but original TradeX script is morally obsolete and was not ready for production (if you try it use from original repo). TradeX have lot errors and deprecations, and most importantly, it have no outgoing list traffic algorithms. In my case script works with 400k site without troubles and with 50+ another smaller or similar sites on same server using classic trade script outlist with some additional improvements.
 
 
-## Ok. My Role:
+## My Fork Role:
 
 - Redesigned general Stats. On top of stats page You can see some important Overall stats.
 - Adequate "Outgoing List" with sort by trader ratio (ratio formula can be found in the documentation).
@@ -30,17 +30,17 @@ Sorry, but original TradeX script is not usable if you try it from original repo
 - Possibility to use Redis as local storage for fast stats (script dont use any DB engine, it not needed).
 - Improved interface for Hourly forces.
 - Added Network trade deletion.
-- Trader GEO stats visualisation improvements (removed flash).
+- Trader GEO stats visualisation improvements (removed Adobe Flash GUI).
 - Fix lots of bugs.
-- All FREE! Script dont get any hit of traffic.
+- All FREE! Script dont get any hit of traffic for me. (Just do not forget remove my urls added as default in General Settings and from System Traders!)
 - Use as is.
-- Updates and som screenshots: https://forums.unofficialjmbsupport.com/index.php?topic=381.0
+- Updates and some screenshots you can found here: https://forums.unofficialjmbsupport.com/index.php?topic=381.0
 
 
 ## Installation
 
 - Installation script located in install-script directory. (In this case you need have a key for domain, coz you need use my build from my servers. Try to convince me why I need it! But I'm glad to any script improvements, except typos.)
-- Html docs located in sft/cp/docs/ or online on my server http://sflash.biz/sft-dist-pub/docs/
+- Html docs located now only on my server http://sflash.biz/sft-dist-pub/docs/ (sorry, but but this is most easy way to be updated)
 
 
 ## Manual Installation
