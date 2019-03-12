@@ -298,18 +298,11 @@ function generate_outlists($stats)
     require_once 'dirdb.php';
     $db = new TradeDB();
 
-    // Get country weights
     $fp = fopen(FILE_COUNTRIES, 'r');
     $weights = explode('|', trim(fread($fp, RECORD_SIZE_COUNTRY_WEIGHT)));
     fclose($fp);
 
-    // Calculate average click again
-    //$ca_avg = count($stats) > 1 ? $stats['total']['24h'][11] / count($stats) - 1 : 0;
-
-    // Store points calculated for each eligible trade
     $points = array();
-
-    // Store trades with forces
     $forces = array();
 
     foreach( $stats as $trade => $ts )
@@ -319,7 +312,6 @@ function generate_outlists($stats)
 
         if( !empty($settings) )
         {
-            // See if a new trade has met the rules for becoming active
             if( $settings['status'] == STATUS_NEW )
             {
                 $prod_24 = $ts['24h'][1] > 0 ? $ts['24h'][7] / $ts['24h'][1] * 100 : 0;
@@ -339,19 +331,16 @@ function generate_outlists($stats)
                     }
                     else
                     {
-                        // New trade has not yet met the minimum requirements
                         continue;
                     }
                 }
                 else
                 {
-                    // New trades must be manually activated by administrator (start_raws, start_clicks, start_prod all set to 0)
                     continue;
                 }
             }
 
 
-            // Check if autostopped trade can be re-activated
             if( $C['flag_reactivate_autostopped'] && $settings['status'] == STATUS_AUTOSTOPPED )
             {
                 $prod_24 = $ts['24h'][1] > 0 ? $ts['24h'][7] / $ts['24h'][1] * 100 : 0;
@@ -365,10 +354,8 @@ function generate_outlists($stats)
             }
 
 
-            // Process active trades
             if( $settings['status'] == STATUS_ACTIVE )
             {
-                // If the autostop interval has elapsed, start checking autostop rules
                 if( $now - $settings['timestamp_autostop'] >= $C['autostop_interval'] * SECONDS_PER_HOUR )
                 {
                     $prod_24 = $ts['24h'][1] > 0 ? $ts['24h'][7] / $ts['24h'][1] * 100 : 0;
@@ -379,29 +366,18 @@ function generate_outlists($stats)
                     }
                 }
 
-
-                // Updates to apply to the trade settings
                 $updates = array();
 
-
-                // If pushing ...
                 if( $settings['push_to'] > 0 )
                 {
-                    // Amount achieved, so disable the push value
                     if( $ts['24h'][1] >= $settings['push_to'] )
                     {
                         $updates['push_to'] = $settings['push_to'] = 0;
                     }
-
-                    // Amount not achieved, so use the push weight AND calculate in, out, and clicks to put them into main points
                     else
                     {
                         $settings['trade_weight'] = $settings['push_weight'];
 
-                        // Calculate amount needed to reach the push
-                        //$in_needed = $settings['push_to'] - $ts['24h'][1];
-
-                        // Set traffic quality
                         $ts['24h'][4] = $ts['60m'][4] = 75;
                         $ts['24h'][5] = $ts['60m'][5] = 25;
                         $ts['24h'][6] = $ts['60m'][6] = 0;
@@ -416,24 +392,19 @@ function generate_outlists($stats)
                         $ts['60m'][7] = round($settings['push_to'] / 60 * 1.25);
                         $ts['60m'][15] = round($settings['push_to'] / 60 * 0.80);
 
-                        //pow($i_uniq_24, 0.333) * $ts['24h'][7] * 0.65 / $ts['24h'][15] + pow($i_uniq_60, 0.333) * $ts['60m'][7] * 0.35 / $ts['60m'][15];
                     }
                 }
 
 
-                // If a force is set
                 if( $settings['force_instant'] > 0 || $settings['force_hourly'] > 0 )
                 {
-                    // Handle instant force
                     if( $settings['force_instant'] > 0 )
                     {
                         $settings['force_instant_owed'] = $updates['force_instant_owed'] = max(0, $settings['force_instant_owed'] - $ts['1m'][21]);
                     }
 
-                    // Handle hourly force
                     if( $settings['force_hourly'] > 0 )
                     {
-                        // See if the hourly force has expired
                         if( !empty($settings['force_hourly_end']) && $now >= strtotime($settings['force_hourly_end']) )
                         {
                             $settings['force_hourly'] = $updates['force_hourly'] = 0;
@@ -441,13 +412,13 @@ function generate_outlists($stats)
                             $settings['force_hourly_end'] = $updates['force_hourly_end'] = STRING_BLANK;
                         }
 
-                        // Hourly update, so reset the amount owed to the amount configured
+
                         if( $g_stats_hourly )
                         {
                             $updates['force_hourly_owed'] = $settings['force_hourly_owed'] = $settings['force_hourly'];
                         }
 
-                        // Deduct the amount received in the past minute
+
                         else if( $g_stats_minute )
                         {
                             $settings['force_hourly_owed'] = $updates['force_hourly_owed'] = max(0, $settings['force_hourly_owed'] - $ts['1m'][22]);
@@ -463,22 +434,15 @@ function generate_outlists($stats)
                     $settings['flag_force_instant_high'] = $updates['flag_force_instant_high'] = 0;
                 }
 
-
-                // Update trade settings if necessary
                 if( !empty($updates) )
                 {
                     $db->Update($trade, $updates);
                 }
 
-
-                // After updating forces, see if a force is still set
                 $force_set = $settings['force_instant'] > 0 || $settings['force_hourly'] > 0;
 
-                // Flag to indicate if this trade has a high priority instant force set
                 $high_priority_instant = $settings['force_instant'] > 0 && $settings['flag_force_instant_high'];
 
-
-                // Add to force list
                 if( $force_set && !$high_priority_instant )
                 {
                     $force_instant_pct = $settings['force_instant'] > 0 ? $settings['force_instant_owed'] / $settings['force_instant'] * 100 : 0;
@@ -504,32 +468,26 @@ function generate_outlists($stats)
                 }
 
 
-                // Max owed for high priority forces
                 if( $force_set && $high_priority_instant )
                 {
                     $settings['max_owed'] = $settings['force_instant_owed'];
                 }
 
-
-                // Check caps only if a high priority instant force is not set
-                //    AND
-                // A push is not set
                 if( !$high_priority_instant && !$settings['push_to'] )
                 {
-                    // Trades that have exceeded their max out are not eligible for the outlist
                     if( $settings['max_out'] > 0 && $ts['24h'][15] >= $settings['max_out'] )
                     {
                         continue;
                     }
 
-                    // Trades that have exceeded their hourly cap are not eligible for the outlist
+
                     $ret_60 = $ts['60m'][1] > 0 ? $ts['60m'][15] / $ts['60m'][1] * 100 : 0;
                     if( $settings['hourly_cap'] > 0 && $ret_60 >= $settings['hourly_cap'] )
                     {
                         continue;
                     }
 
-                    // Trades that have exceeded their daily cap are not eligible for the outlist
+
                     $ret_24 = $ts['24h'][1] > 0 ? $ts['24h'][15] / $ts['24h'][1] * 100 : 0;
                     if( $settings['daily_cap'] > 0 && $ret_24 >= $settings['daily_cap'] )
                     {
@@ -539,12 +497,10 @@ function generate_outlists($stats)
             }
             else
             {
-                // Disabled and unconfirmed trades are not eligible to be in the outlists
                 continue;
             }
 
 
-            // Calculate 24h incoming traffic quality
             $i_ctry_tot_24 = $ts['24h'][4] + $ts['24h'][5] + $ts['24h'][6];
             $i_raw_24 = $i_uniq_24 = 0;
             if( $i_ctry_tot_24 > 0 )
@@ -566,7 +522,6 @@ function generate_outlists($stats)
             }
 
 
-            // Calculate 60m incoming traffic quality
             $i_ctry_tot_60 = $ts['60m'][4] + $ts['60m'][5] + $ts['60m'][6];
             $i_raw_60 = $i_uniq_60 = 0;
             if( $i_ctry_tot_60 > 0 )
@@ -588,7 +543,6 @@ function generate_outlists($stats)
             }
 
 
-            // Calculate max owed
             if( !isset($settings['max_owed']) )
             {
                 $age = $now - $settings['timestamp_autostop'];
@@ -628,7 +582,6 @@ function generate_outlists($stats)
             if( ($i_raw_24 >= 0 && $settings['max_owed'] >= 0) || $high_priority_instant )
             {
 
-                // Setup points array
                 $points[$trade] = array('trade' => $settings,
                                         POINTS_MAIN => 0,
                                         POINTS_PRIMARY_BONUS => 0,
@@ -643,7 +596,6 @@ function generate_outlists($stats)
                 $points[$trade][POINTS_SECONDARY_BONUS] = $i_uniq_60 / $ts['60m'][15];
 
 
-                // Calculate the weight to apply, and apply it to points
                 $weight = $settings['trade_weight'] / 100;
                 if( $weight != 1 )
                 {
@@ -653,57 +605,53 @@ function generate_outlists($stats)
                 }
 
 
-                // Default modifier points to zero
                 $modifier_points = array(POINTS_MAIN => 0,
                                          POINTS_PRIMARY_BONUS => 0,
                                          POINTS_SECONDARY_BONUS => 0);
 
 
-                // Stats needed for modifiers
                 $prod_24 = $ts['24h'][1] > 0 ? $ts['24h'][7] / $ts['24h'][1] * 100 : 0;
                 $unique_24 = $ts['24h'][1] > 0 ? $ts['24h'][2] / $ts['24h'][1] * 100 : 0;
                 $return_24 = $ts['24h'][1] > 0 ? $ts['24h'][15] / $ts['24h'][1] * 100 : 0;
                 $proxy_24 = $ts['24h'][1] > 0 ? $ts['24h'][3] / $ts['24h'][1] * 100 : 0;
 
 
-                // Productivity bonus modifier
                 if( $C['mod_bonus_prod'] > 100 && $prod_24 >= $C['bonus_prod_low'] && $prod_24 <= $C['bonus_prod_high'] )
                 {
                     apply_bonus_points_modifier($points[$trade], $modifier_points, $C['mod_bonus_prod']);
                 }
 
-                // Good uniques bonus modifier
+
                 if( $C['mod_bonus_unique'] > 100 && $unique_24 >= $C['bonus_unique_low'] && $unique_24 <= $C['bonus_unique_high'] )
                 {
                     apply_bonus_points_modifier($points[$trade], $modifier_points, $C['mod_bonus_unique']);
                 }
 
-                // Low return bonus modifier
+
                 if( $C['mod_bonus_return'] > 100 && $return_24 >= $C['bonus_return_low'] && $return_24 <= $C['bonus_return_high'] )
                 {
                     apply_bonus_points_modifier($points[$trade], $modifier_points, $C['mod_bonus_return']);
                 }
 
-                // Too high or low proxy % penalty
+
                 if( $C['mod_penalty_proxy'] < 100 && $proxy_24 < $C['penalty_proxy_low'] && $proxy_24 > $C['penalty_proxy_high'] )
                 {
                     apply_penalty_points_modifier($points[$trade], $modifier_points, $C['mod_penalty_proxy']);
                 }
 
-                // Too high or low unique % penalty
+
                 if( $C['mod_penalty_unique'] < 100 && $unique_24 < $C['penalty_unique_low'] && $unique_24 > $C['penalty_unique_high'] )
                 {
                     apply_penalty_points_modifier($points[$trade], $modifier_points, $C['mod_penalty_unique']);
                 }
 
-                // Too high return % penalty
+
                 if( $C['mod_penalty_return'] < 100 && $unique_24 < $C['penalty_return_low'] && $unique_24 > $C['penalty_return_high'] )
                 {
                     apply_penalty_points_modifier($points[$trade], $modifier_points, $C['mod_penalty_return']);
                 }
 
 
-                // Add modifier points
                 $points[$trade][POINTS_MAIN] = max(0, $points[$trade][POINTS_MAIN] + $modifier_points[POINTS_MAIN]);
                 $points[$trade][POINTS_PRIMARY_BONUS] = max(0, $points[$trade][POINTS_PRIMARY_BONUS] + $modifier_points[POINTS_PRIMARY_BONUS]);
                 $points[$trade][POINTS_SECONDARY_BONUS] = max(0, $points[$trade][POINTS_SECONDARY_BONUS] + $modifier_points[POINTS_SECONDARY_BONUS]);
@@ -711,19 +659,11 @@ function generate_outlists($stats)
         }
     }
 
-    // Generate main outlist
     write_outlist(FILE_OUTLIST_MAIN, POINTS_MAIN, $points);
-
-    // Generate primary bonus outlist
     write_outlist(FILE_OUTLIST_PRIMARY, POINTS_PRIMARY_BONUS, $points);
-
-    // Generate secondary bonus outlist
     write_outlist(FILE_OUTLIST_SECONDARY, POINTS_SECONDARY_BONUS, $points);
-
-    // Generate force outlist
     write_outlist(FILE_OUTLIST_FORCES, POINTS_FORCE, $forces);
 
-    // Update dynamic skim schemes
     update_dynamic_skim_schemes($stats['total'], $now);
 }
 
