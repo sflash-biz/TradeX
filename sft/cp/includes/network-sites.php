@@ -58,7 +58,7 @@ $sites = $db->RetrieveAll('domain');
           <img src="images/edit-32x32.png" class="action" title="Bulk Edit">
           <img src="images/delete-32x32.png" class="action" title="Delete">
           <img src="images/toolbar-separator-2x32.png">
-          <a href="docs/network-manage-sites.html" title="Documentation" target="_blank"><img src="images/help-32x32.png" border="0"></a>
+          <a href="http://sflash.biz/sft-dist-pub/docs/network-manage-sites.html" title="Documentation" target="_blank"><img src="images/help-32x32.png" border="0"></a>
         </div>
       </div>
     </div>

@@ -59,7 +59,7 @@ global $g_counter, $g_color;
         </div>
 
         <div id="dialog-help">
-            <a href="docs/outlist-settings.html" target="_blank"><img src="images/help-22x22.png"></a>
+            <a href="http://sflash.biz/sft-dist-pub/docs/outlist-settings.html" target="_blank"><img src="images/help-22x22.png"></a>
         </div>
 
         <div id="dialog-buttons">

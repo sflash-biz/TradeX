@@ -21,7 +21,7 @@
           </div>
 
           <div id="dialog-help">
-            <a href="docs/search-engines.html" target="_blank"><img src="images/help-22x22.png"></a>
+            <a href="http://sflash.biz/sft-dist-pub/docs/search-engines.html" target="_blank"><img src="images/help-22x22.png"></a>
           </div>
 
           <div id="dialog-buttons">

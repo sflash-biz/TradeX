@@ -76,7 +76,7 @@ $schemes = $db->RetrieveAll()
           <img src="images/save-32x32.png" class="action" title="Save">
           <img src="images/delete-32x32.png" class="action" title="Delete">
           <img src="images/toolbar-separator-2x32.png">
-          <a href="docs/skim-schemes.html" title="Documentation" target="_blank"><img src="images/help-32x32.png" border="0"></a>
+          <a href="http://sflash.biz/sft-dist-pub/docs/skim-schemes.html" title="Documentation" target="_blank"><img src="images/help-32x32.png" border="0"></a>
         </div>
       </div>
     </div>

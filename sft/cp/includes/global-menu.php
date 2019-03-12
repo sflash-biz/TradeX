@@ -25,7 +25,7 @@ endif;
         <?php } ?>
         <span id="server_date_time">0000-00-00<br>00:00:00</span>
         <!--a href="index.php?r=_xStatsOverallShow"><img src="images/stats-reload-40x32.png" title="Go to Stats and Refresh" border="0"></a-->
-        <a href="docs/index.html" target="_blank"><img src="images/help-22x22.png" border="0"></a>
+        <a href="http://sflash.biz/sft-dist-pub/docs/index.html" target="_blank"><img src="images/help-22x22.png" border="0"></a>
         <a href="index.php?r=_xLogout"><img src="images/logout-32x32.png" border="0"></a>
 
         <span class="menu">

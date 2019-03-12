@@ -180,7 +180,7 @@ $trades = $db->RetrieveAll('domain');
           <img src="images/toolbar-separator-2x32.png">
           <img src="images/sync-32x32.png" class="action" title="Sync">
           <img src="images/toolbar-separator-2x32.png">
-          <a href="docs/network-sync-settings.html" title="Documentation" target="_blank"><img src="images/help-32x32.png" border="0"></a>
+          <a href="http://sflash.biz/sft-dist-pub/docs/network-sync-settings.html" title="Documentation" target="_blank"><img src="images/help-32x32.png" border="0"></a>
         </div>
       </div>
     </div>

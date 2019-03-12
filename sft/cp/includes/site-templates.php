@@ -150,7 +150,7 @@ $(function()
           <img src="images/save-32x32.png" class="action" title="Save">
           <img src="images/reload-32x32.png" class="action" title="Refresh">
           <img src="images/toolbar-separator-2x32.png">
-          <a href="docs/templates-site.html" title="Documentation" target="_blank"><img src="images/help-32x32.png" border="0"></a>
+          <a href="http://sflash.biz/sft-dist-pub/docs/templates-site.html" title="Documentation" target="_blank"><img src="images/help-32x32.png" border="0"></a>
         </div>
       </div>
     </div>

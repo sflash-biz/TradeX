@@ -90,7 +90,7 @@ LOG;
         <div id="toolbar-icons">
           <img src="images/delete-32x32.png" class="action" title="Delete">
           <img src="images/toolbar-separator-2x32.png">
-          <a href="docs/logs.html" title="Documentation" target="_blank"><img src="images/help-32x32.png" border="0"></a>
+          <a href="http://sflash.biz/sft-dist-pub/docs/logs.html" title="Documentation" target="_blank"><img src="images/help-32x32.png" border="0"></a>
         </div>
       </div>
     </div>

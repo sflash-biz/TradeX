@@ -60,7 +60,7 @@ $toplists = $db->RetrieveAll($_REQUEST['sort_by']);
           <img src="images/build-32x32.png" class="action" title="Build">
           <img src="images/delete-32x32.png" class="action" title="Delete">
           <img src="images/toolbar-separator-2x32.png">
-          <a href="docs/toplist-manage.html" title="Documentation" target="_blank"><img src="images/help-32x32.png" border="0"></a>
+          <a href="http://sflash.biz/sft-dist-pub/docs/toplist-manage.html" title="Documentation" target="_blank"><img src="images/help-32x32.png" border="0"></a>
         </div>
       </div>
     </div>
