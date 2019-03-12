@@ -915,7 +915,7 @@ function write_outlist($file, $sort_key, &$points, $amount = null)
 
         fwrite($fp, pack('LL', $owed, strlen($line)) . $line);
     }
-    unset($points_tmp);
+//    unset($points_tmp);
     flock($fp, LOCK_UN);
     fclose($fp);
 }
