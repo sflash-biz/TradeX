@@ -625,11 +625,6 @@ function generate_outlists($stats)
             }
 
 
-
-            // Only include in outlist if at least 1 raw in the last 24 hours
-            //    AND
-            // max_owed is > 0
-            // $i_raw_24 fixed to >= 0 and $settings['max_owed'] >= 0 - send to 0 in trades too; for example, site start
             if( ($i_raw_24 >= 0 && $settings['max_owed'] >= 0) || $high_priority_instant )
             {
 
@@ -643,27 +638,9 @@ function generate_outlists($stats)
                 $ts['60m'][15] = max(1, $ts['60m'][15]);
 
 
-                /*
-                // $ts['24h'][7] - clicks 24h
-                // $ts['24h'][15] - outs 24h
-                */
-
-
-                //$points[$trade][POINTS_MAIN] = (pow($i_uniq_24, 0.375) * $ts['24h'][7] / $ts['24h'][15]) * 0.80 + (pow($i_uniq_60, 0.375) * $ts['60m'][7] / $ts['60m'][15]) * 0.20;
-                //$points[$trade][POINTS_MAIN] = ($ts['24h'][7] / $ts['24h'][15]) * 0.80 + ($ts['60m'][7] / $ts['60m'][15]) * 0.20;
-                //$points[$trade][POINTS_PRIMARY_BONUS] = ($ts['24h'][7] / $ts['24h'][15]) * 0.60 + ($ts['60m'][7] / $ts['60m'][15]) * 0.40;
                 $points[$trade][POINTS_MAIN] = $ts['24h'][7] / $ts['24h'][15];
                 $points[$trade][POINTS_PRIMARY_BONUS] = $ts['60m'][7] / $ts['60m'][15];
                 $points[$trade][POINTS_SECONDARY_BONUS] = $i_uniq_60 / $ts['60m'][15];
-
-
-//                if( $ts['24h'][15] > 100 )
-//                {
-//                    $ca_factor = max(0.9, min(1.1, $ts['24h'][11] / $ca_avg));
-//                    $points[$trade][POINTS_MAIN] *= $ca_factor;
-//                    $points[$trade][POINTS_PRIMARY_BONUS] *= $ca_factor;
-//                    $points[$trade][POINTS_SECONDARY_BONUS] *= $ca_factor;
-//                }
 
 
                 // Calculate the weight to apply, and apply it to points
