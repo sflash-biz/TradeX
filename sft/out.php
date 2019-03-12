@@ -593,6 +593,7 @@ function select_trade($trade)
     if ($outlist_file === 'outlist_main')
     {
         $outlist_size = count($trades);
+        if ($outlist_size == 0) return null;
         $outlist_weights = array(/*#<OUTLIST_POINTS>*/1200,500,350,270,200,150,100,80,50,30/*#</OUTLIST_POINTS>*/);
         $outlist_weights = array_slice($outlist_weights, 0, $outlist_size);
         $weights_sum = array_sum($outlist_weights);
@@ -640,7 +641,7 @@ function select_trade($trade)
         }
     }
 
-    return $send_to_trade[0];
+    return empty($send_to_trade[0]) ? null : $send_to_trade[0];
 }
 
 function is_allowed_trade(&$trade, &$send_to_trade, &$i_excludes)
