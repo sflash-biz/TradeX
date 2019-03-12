@@ -133,7 +133,7 @@ if ($g_session['t'] != 'spiders')
         if (!isset($_COOKIE[$tdxsig]) || isset($_COOKIE[$tdxsig]) && $_COOKIE[$tdxsig] != $cookie_signature)
         {
 
-        // Debug logging
+            // Debug logging
 //        $fp = fopen('logs/debug.log', 'a');
 //        flock($fp, LOCK_EX);
 //        fwrite($fp, "Bad signature\n");
@@ -143,8 +143,22 @@ if ($g_session['t'] != 'spiders')
             $g_session['t'] = 'unknown';
         }
 
+        // Bad signature #2
+        if (isset($_COOKIE[$tdxsig]) && $_COOKIE[$tdxsig] != $cookie_signature)
+        {
+
+            // Debug logging
+//        $fp = fopen('logs/debug.log', 'a');
+//        flock($fp, LOCK_EX);
+//        fwrite($fp, "Bad signature #2\n");
+//        flock($fp, LOCK_UN);
+//        fclose($fp);
+
+            $g_session['t'] = 'unknown';
+        }
+
         // Cookie data does not match server-side stored data
-        if (isset($_COOKIE[$tdxsig]) || $_COOKIE[$tdxsig] == $cookie_signature)
+        if (isset($_COOKIE[$tdxsig]) && $_COOKIE[$tdxsig] == $cookie_signature)
         {
             if ($cookie_data != $session_data)
             {
