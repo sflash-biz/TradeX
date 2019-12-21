@@ -382,7 +382,7 @@ function _stats_overall_table_row($so, $menu = 'trade-action-menu', $system = fa
   </tr>
 <?php } ?>
 
-        <tr <?php if( !empty($so->trade['color']) ) echo 'style="background-color: ' . $so->trade['color'] . ';"'; ?> id="item-<?php echo str_replace(' ', '_', $domain); ?>" class="ta-right<?php if ($system && !empty($so->trade['flag_exlude_global'])) echo ' light-font-color"'; ?>">
+        <tr <?php if( !empty($so->trade['color']) ) echo 'style="background-color: ' . $so->trade['color'] . ';"'; ?> id="item-<?php echo str_replace(' ', '_', $domain); ?>" class="ta-right<?php if ($system && !empty($so->trade['flag_exlude_global'])) echo ' light-font-color'; ?>">
           <?php if( !empty($menu) ): ?>
           <td class="ta-center">
             <input type="checkbox" value="<?php echo $domain; ?>">

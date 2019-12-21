@@ -239,7 +239,7 @@ function _stats_hourly_table_row($sh, $menu = 'trade-action-menu', $system = fal
 
         <?php if( $domain == 'Grand Total' ) echo '<tr style="background-color: #fff;"><td colspan="999"> &nbsp; </td></tr>'; ?>
 
-        <tr <?php if( !empty($sh->trade['color']) ) echo 'style="background-color: ' . $sh->trade['color'] . ';"'; ?> id="item-<?php echo str_replace(' ', '_', $domain); ?>" class="ta-right<?php if (!empty($sh->trade['flag_exlude_global'])) echo ' light-font-color"'; ?>">
+        <tr <?php if( !empty($sh->trade['color']) ) echo 'style="background-color: ' . $sh->trade['color'] . ';"'; ?> id="item-<?php echo str_replace(' ', '_', $domain); ?>" class="ta-right<?php if (!empty($sh->trade['flag_exlude_global'])) echo ' light-font-color'; ?>">
           <?php if( !empty($menu) ): ?>
           <td class="ta-center">
             <input type="checkbox" value="<?php echo $domain; ?>">
