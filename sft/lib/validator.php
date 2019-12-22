@@ -271,7 +271,7 @@ class Validator
         return ((count($this->failed) > 0) ? $this->failed : null);
     }
 
-    function &Get()
+    static function &Get()
     {
         static $self = null;
 

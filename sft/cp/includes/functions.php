@@ -304,7 +304,7 @@ function recompile_templates()
         if( ($code = $compiler->CompileFile($file, DIR_TEMPLATES)) === false )
         {
             return array(JSON_KEY_MESSAGE => 'Template ' . $file . ' contains errors',
-                         JSON_KEY_WARNINGS => Compiler::GetErrors());
+                         JSON_KEY_WARNINGS => $compiler->GetErrors());
         }
 
         file_write($compiled, $code);
