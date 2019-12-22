@@ -121,7 +121,7 @@ class PHPMailer {
 
   var $PluginDir         = '';
 
-  var $Version           = "2.0.4";
+  var $Version           = "2.1.0";
 
   var $ConfirmReadingTo  = '';
 
