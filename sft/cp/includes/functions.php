@@ -66,6 +66,8 @@ function cp_authenticate($session = true)
     {
         return cp_session_authenticate($_COOKIE[CP_COOKIE_NAME]);
     }
+
+    return 'Something wrong: cp_authenticate';
 }
 
 function cp_session_authenticate($cookie)

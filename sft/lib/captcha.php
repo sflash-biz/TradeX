@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpConstructorStyleInspection */
 
 define('CAPTCHA_COOKIE', 'sftcaptcha');
 define('CAPTCHA_EXPIRES', 300);

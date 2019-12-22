@@ -1479,7 +1479,8 @@ class POP3
   var $error;     //  Error log array
 
 
-  function POP3 ()
+    /** @noinspection PhpConstructorStyleInspection */
+    function POP3 ()
     {
       $this->pop_conn = 0;
       $this->connected = false;
