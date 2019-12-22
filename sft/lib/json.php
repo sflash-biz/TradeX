@@ -29,7 +29,7 @@ define('JSON_KEY_SAVED_SEARCH', 'saved_search');
 class JSON
 {
 
-    function Response($status, $data)
+    static function Response($status, $data)
     {
         if( !is_array($data) )
         {
@@ -40,27 +40,27 @@ class JSON
         echo JSON::_encode($data);
     }
 
-    function Success($data = array())
+    static function Success($data = array())
     {
         JSON::Response(JSON_STATUS_SUCCESS, $data);
     }
 
-    function Warning($data = array())
+    static function Warning($data = array())
     {
         JSON::Response(JSON_STATUS_WARNING, $data);
     }
 
-    function Error($data = array())
+    static function Error($data = array())
     {
         JSON::Response(JSON_STATUS_ERROR, $data);
     }
 
-    function Logout()
+    static function Logout()
     {
         JSON::Response(JSON_STATUS_LOGOUT, array());
     }
 
-    function _encode($var)
+    static function _encode($var)
     {
         switch( gettype($var) )
         {
@@ -113,7 +113,7 @@ class JSON
         }
     }
 
-    function name_value($name, $value)
+    static function name_value($name, $value)
     {
         $encoded_value = JSON::_encode($value);
         return JSON::_encode(strval($name)) . ':' . $encoded_value;
