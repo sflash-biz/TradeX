@@ -18,6 +18,7 @@ if( ($auth_error = cp_authenticate()) === true )
 else
 {
     JSON::Logout();
+    return '';
 }
 
 function _xMogrifyTest()
@@ -39,6 +40,7 @@ function _xMogrifyTest()
     {
         JSON::Warning('The mogrify path does not appear to be valid and the GD PHP extension is either not installed or configured without JPEG support.  Thumbnail resizing will not be possible.');
     }
+    return '';
 }
 
 
@@ -56,8 +58,9 @@ function _xRedisTest()
     else
     {
         JSON::Warning('Redis Host is required field!');
-        return;
+        return '';
     }
+
     if (!empty($redis_host_port[1]))
     {
         $C['redis_port'] = $redis_host_port[1];
@@ -65,7 +68,7 @@ function _xRedisTest()
     else
     {
         JSON::Warning('Redis Port is required field! Or type "sock" if use socket.');
-        return;
+        return '';
     }
 
     check_redis();
@@ -90,6 +93,7 @@ function _xRedisTest()
     {
         JSON::Warning('Looks like something wrong Redis settings!');
     }
+    return '';
 }
 ///////////////////////////////////////
 
@@ -143,6 +147,7 @@ function _xGrabThumbs()
     {
         JSON::Warning($trade['domain'] . ' does not have the "Grab thumbs" option enabled');
     }
+    return '';
 }
 
 function _xUpdateGetInstaller()
@@ -190,6 +195,7 @@ function _xUpdateGetInstaller()
     {
         JSON::Error('Unable to connect to update host for update: ' . $http->error);
     }
+    return '';
 }
 
 function _xUpdateExtractInstaller()
@@ -362,6 +368,7 @@ function _xUpdateExtractInstaller()
 
 
     JSON::Success();
+    return '';
 }
 
 function _xPatch()
@@ -385,11 +392,13 @@ function _xPatch()
     }
 
     JSON::Success();
+    return '';
 }
 
 function _xLinkGenerateShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('link-generate.php')));
+    return '';
 }
 
 function _xLinkGenerate()
@@ -443,11 +452,12 @@ function _xLinkGenerate()
     }
 
     JSON::Success(array('url' => $C['base_url'] . '/out.php?' . join('&', $params)));
+    return '';
 }
 
 function _xNetworkSync()
 {
-    
+
     require_once 'network-util.php';
 
     $settings = null;
@@ -558,6 +568,7 @@ function _xNetworkSync()
     if( empty($site) )
     {
         JSON::Warning(array('response' => 'Site no longer exists in the database'));
+        return '';
     }
 
 
@@ -566,9 +577,11 @@ function _xNetworkSync()
     if( ($response = $nr->Execute()) === false )
     {
         JSON::Warning(array('response' => $nr->error));
+        return '';
     }
 
     JSON::Success();
+    return '';
 }
 
 
@@ -605,7 +618,6 @@ function _xNetworkSiteDelete()
     }
 
 
-
     $settings = base64_encode(serialize($settings));
 
 
@@ -617,6 +629,7 @@ function _xNetworkSiteDelete()
     if( empty($site) )
     {
         JSON::Warning(array('response' => 'Site no longer exists in the database'));
+        return '';
     }
 
 
@@ -625,9 +638,11 @@ function _xNetworkSiteDelete()
     if( ($response = $nr->Execute()) === false )
     {
         JSON::Warning(array('response' => $nr->error));
+        return '';
     }
 
     JSON::Success();
+    return '';
 }
 //////////////////////////////////////////////
 
@@ -648,19 +663,20 @@ function _xNetworkStatsTotalGet()
 
     if( is_array($cache) )
     {
-/*        foreach( $cache as $domain => $data )
-        {
-            $so_total->AddStats($data['so']);
-        }*/
+        /*        foreach( $cache as $domain => $data )
+                {
+                    $so_total->AddStats($data['so']);
+                }*/
 
         foreach( $db->RetrieveAll() as $site )
         {
-           // var_dump($cache[$site['domain']]['so']);
+            // var_dump($cache[$site['domain']]['so']);
             $so_total->AddStats($cache[$site['domain']]['so']);
         }
     }
 
     JSON::Success(array('response' => $so_total));
+    return '';
 }
 
 function _xNetworkStatsGet()
@@ -675,6 +691,7 @@ function _xNetworkStatsGet()
     {
         network_stats_cache_remove($_REQUEST['domain']);
         JSON::Warning(array('response' => 'Site no longer exists in the database'));
+        return '';
     }
 
     // Get stats for a network site
@@ -683,21 +700,24 @@ function _xNetworkStatsGet()
     {
         network_stats_cache_remove($_REQUEST['domain']);
         JSON::Warning(array('response' => $nr->error));
+        return '';
     }
 
     network_stats_cache_update($site, $response);
 
     JSON::Success(array('response' => unserialize($response)));
+    return '';
 }
 
 function _xNetworkSitesAddShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('network-sites-add.php')));
+    return '';
 }
 
 function _xNetworkSitesAdd()
 {
-    
+
 
     $v = Validator::Get();
 
@@ -708,7 +728,8 @@ function _xNetworkSitesAdd()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Network site could not be added; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
 
@@ -733,9 +754,10 @@ function _xNetworkSitesAdd()
     network_site_update_stored_values();
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Network site has been successfully added',
-                        JSON_KEY_ROW => _xIncludeCapture('network-sites-tr.php', $_REQUEST),
-                        JSON_KEY_ITEM_TYPE => 'network-sites',
-                        JSON_KEY_DIALOG => _xIncludeCapture('network-sites-add.php')));
+        JSON_KEY_ROW => _xIncludeCapture('network-sites-tr.php', $_REQUEST),
+        JSON_KEY_ITEM_TYPE => 'network-sites',
+        JSON_KEY_DIALOG => _xIncludeCapture('network-sites-add.php')));
+    return '';
 }
 
 function _xNetworkSitesEditShow()
@@ -746,11 +768,12 @@ function _xNetworkSitesEditShow()
     $data = $db->Retrieve($_REQUEST['domain']);
 
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('network-sites-add.php', $data)));
+    return '';
 }
 
 function _xNetworkSitesEdit()
 {
-    
+
 
     $v = Validator::Get();
 
@@ -761,7 +784,8 @@ function _xNetworkSitesEdit()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Network site could not be updated; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     $_REQUEST['domain'] = domain_from_url($_REQUEST['url']);
@@ -785,17 +809,19 @@ function _xNetworkSitesEdit()
     network_site_update_stored_values();
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Network site has been successfully updated',
-                        JSON_KEY_DIALOG => _xIncludeCapture('network-sites-add.php', $_REQUEST)));
+        JSON_KEY_DIALOG => _xIncludeCapture('network-sites-add.php', $_REQUEST)));
+    return '';
 }
 
 function _xNetworkSitesBulkEditShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('network-sites-bulk-edit.php')));
+    return '';
 }
 
 function _xNetworkSitesBulkEdit()
 {
-    
+
     $v = Validator::Get();
 
     if( $_REQUEST['flag_update']['username'] )
@@ -811,7 +837,8 @@ function _xNetworkSitesBulkEdit()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Network sites could not be updated; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     if( $_REQUEST['flag_update']['category'] && string_is_empty($_REQUEST['category']) )
@@ -848,37 +875,35 @@ function _xNetworkSitesBulkEdit()
     network_site_update_stored_values();
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'The selected network sites have been updated',
-                        JSON_KEY_DIALOG => _xIncludeCapture('network-sites-bulk-edit.php', $_REQUEST)));
+        JSON_KEY_DIALOG => _xIncludeCapture('network-sites-bulk-edit.php', $_REQUEST)));
+    return '';
 }
 
 function _xNetworkSitesDelete()
 {
-    
-
     network_site_delete($_REQUEST['domain']);
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Network site has been deleted',
-                        JSON_KEY_ITEM_TYPE => 'network-sites',
-                        JSON_KEY_ITEM_ID => $_REQUEST['domain']));
+        JSON_KEY_ITEM_TYPE => 'network-sites',
+        JSON_KEY_ITEM_ID => $_REQUEST['domain']));
+    return '';
 }
 
 function _xNetworkSitesDeleteBulk()
 {
-    
-
     network_site_delete(explode(',', $_REQUEST['domain']));
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'The selected network sites have been deleted'));
+    return '';
 }
 
 
 function _xLogsDeleteBulk()
 {
-
-
     log_delete(explode(',', $_REQUEST['logs']));
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'The selected logs have been deleted'));
+    return '';
 }
 
 
@@ -890,7 +915,8 @@ function _xSystemTradesEditShow($message = null)
     $data = $db->Retrieve($_REQUEST['domain']);
 
     JSON::Success(array(JSON_KEY_MESSAGE => $message,
-                        JSON_KEY_DIALOG => _xIncludeCapture('system-trades-edit.php', $data)));
+        JSON_KEY_DIALOG => _xIncludeCapture('system-trades-edit.php', $data)));
+    return '';
 }
 
 function _xSystemTradesEdit()
@@ -909,7 +935,8 @@ function _xSystemTradesEdit()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'System trade could not be edited; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     $db->Update($_REQUEST['domain'], system_trade_prepare_data($_REQUEST));
@@ -920,6 +947,7 @@ function _xSystemTradesEdit()
 function _xTradesExportShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-export.php')));
+    return '';
 }
 
 function _xTradesExport()
@@ -936,27 +964,29 @@ function _xTradesExport()
     }
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Export data has been generated',
-                        'lines' => join(STRING_LF_UNIX, $lines)));
+        'lines' => join(STRING_LF_UNIX, $lines)));
+    return '';
 }
 
 function _xTradesDefaultsShow($message = null)
 {
     $vars = array('dialog_title' => 'New Trade Defaults',
-                  'function_name' => '_xTradesDefaultsSave',
-                  'button_text' => 'Save Settings',
-                  'editing' => false,
-                  'default' => true,
-                  'bulk' => false);
+        'function_name' => '_xTradesDefaultsSave',
+        'button_text' => 'Save Settings',
+        'editing' => false,
+        'default' => true,
+        'bulk' => false);
 
     $data = unserialize(file_get_contents(FILE_NEW_TRADE_DEFAULTS));
 
     JSON::Success(array(JSON_KEY_MESSAGE => $message,
-                        JSON_KEY_DIALOG => _xIncludeCapture('trades-add.php', $data, $vars)));
+        JSON_KEY_DIALOG => _xIncludeCapture('trades-add.php', $data, $vars)));
+    return '';
 }
 
 function _xTradesDefaultsSave()
 {
-    
+
 
     unset($_REQUEST['r']);
     file_write(FILE_NEW_TRADE_DEFAULTS, serialize($_REQUEST));
@@ -966,16 +996,17 @@ function _xTradesDefaultsSave()
 function _xTradesBulkAddShow($message = null)
 {
     $vars = array('dialog_title' => 'Bulk Add Trades',
-                  'function_name' => '_xTradesBulkAdd',
-                  'button_text' => 'Add Trades',
-                  'editing' => false,
-                  'default' => false,
-                  'bulk' => true);
+        'function_name' => '_xTradesBulkAdd',
+        'button_text' => 'Add Trades',
+        'editing' => false,
+        'default' => false,
+        'bulk' => true);
 
     $data = unserialize(file_get_contents(FILE_NEW_TRADE_DEFAULTS));
 
     JSON::Success(array(JSON_KEY_MESSAGE => $message,
-                        JSON_KEY_DIALOG => _xIncludeCapture('trades-add.php', $data, $vars)));
+        JSON_KEY_DIALOG => _xIncludeCapture('trades-add.php', $data, $vars)));
+    return '';
 }
 
 function _xTradesBulkAdd()
@@ -992,7 +1023,8 @@ function _xTradesBulkAdd()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Trades could not be added; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     require_once 'dirdb.php';
@@ -1067,28 +1099,29 @@ function _xTradesBulkAdd()
     else
     {
         $message = format_int_to_string($added) . ' trades successfully added<br>' .
-                   format_int_to_string($duplicate) . ' duplicates were skipped<br>' .
-                   format_int_to_string($invalid) . ' with invalid formatting were skipped<br><br>' .
-                   'For details, check the import.log file in the logs directory of your SFTrade installation';
+            format_int_to_string($duplicate) . ' duplicates were skipped<br>' .
+            format_int_to_string($invalid) . ' with invalid formatting were skipped<br><br>' .
+            'For details, check the import.log file in the logs directory of your SFTrade installation';
 
         JSON::Warning(array(JSON_KEY_MESSAGE => $message));
     }
+    return '';
 }
 
 function _xTradesAddShow($message = null)
 {
     $vars = array('dialog_title' => 'Add a Trade',
-                  'function_name' => '_xTradesAdd',
-                  'button_text' => 'Add Trade',
-                  'editing' => false,
-                  'default' => false,
-                  'bulk' => false);
+        'function_name' => '_xTradesAdd',
+        'button_text' => 'Add Trade',
+        'editing' => false,
+        'default' => false,
+        'bulk' => false);
 
     $data = unserialize(file_get_contents(FILE_NEW_TRADE_DEFAULTS));
 
     JSON::Success(array(JSON_KEY_MESSAGE => $message,
-                        JSON_KEY_DIALOG => _xIncludeCapture('trades-add.php', $data, $vars)));
-
+        JSON_KEY_DIALOG => _xIncludeCapture('trades-add.php', $data, $vars)));
+    return '';
 }
 
 function _xTradesAdd()
@@ -1096,8 +1129,6 @@ function _xTradesAdd()
     global $C;
 
     $C['flag_register_email_admin'] = false;
-
-    
 
     require_once 'dirdb.php';
 
@@ -1116,7 +1147,8 @@ function _xTradesAdd()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Trade could not be added; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     if( !empty($_REQUEST['force_instant']) )
@@ -1146,11 +1178,11 @@ function _xTradesAdd()
 function _xTradesEditShow($message = null)
 {
     $vars = array('dialog_title' => 'Edit a Trade',
-                  'function_name' => '_xTradesEdit',
-                  'button_text' => 'Update Trade',
-                  'editing' => true,
-                  'default' => false,
-                  'bulk' => false);
+        'function_name' => '_xTradesEdit',
+        'button_text' => 'Update Trade',
+        'editing' => true,
+        'default' => false,
+        'bulk' => false);
 
     require_once 'dirdb.php';
     $db = new TradeDB();
@@ -1158,7 +1190,8 @@ function _xTradesEditShow($message = null)
     $data = $db->Retrieve($_REQUEST['domain']);
 
     JSON::Success(array(JSON_KEY_MESSAGE => $message,
-                        JSON_KEY_DIALOG => _xIncludeCapture('trades-add.php', $data, $vars)));
+        JSON_KEY_DIALOG => _xIncludeCapture('trades-add.php', $data, $vars)));
+    return '';
 }
 
 function _xTradesEdit()
@@ -1181,7 +1214,8 @@ function _xTradesEdit()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Trade could not be edited; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     $trade = $db->Retrieve($_REQUEST['domain']);
@@ -1243,14 +1277,16 @@ function _xTradesBulkEditShow()
     if( empty($_REQUEST['domain']) )
     {
         JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
+        return '';
     }
 
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-bulk-edit.php', $_REQUEST)));
+    return '';
 }
 
 function _xTradesBulkEdit()
 {
-    
+
     require_once 'dirdb.php';
 
     $_REQUEST = trade_prepare_data($_REQUEST, true);
@@ -1298,18 +1334,20 @@ function _xTradesBulkEdit()
     }
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'The selected trades have been updated',
-                        JSON_KEY_DIALOG => _xIncludeCapture('trades-bulk-edit.php', $_REQUEST)));
+        JSON_KEY_DIALOG => _xIncludeCapture('trades-bulk-edit.php', $_REQUEST)));
+    return '';
 }
 
 function _xTradesEnable()
 {
-    
+
 
     $_REQUEST['domain'] = filter_system_trades($_REQUEST['domain']);
 
     if( empty($_REQUEST['domain']) )
     {
         JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
+        return '';
     }
 
     $now = time();
@@ -1328,18 +1366,20 @@ function _xTradesEnable()
     }
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'The selected trades have been enabled',
-                        JSON_KEY_JS => 'markEnabled("' . $_REQUEST['domain'] . '");'));
+        JSON_KEY_JS => 'markEnabled("' . $_REQUEST['domain'] . '");'));
+    return '';
 }
 
 function _xTradesDisable()
 {
-    
+
 
     $_REQUEST['domain'] = filter_system_trades($_REQUEST['domain']);
 
     if( empty($_REQUEST['domain']) )
     {
         JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
+        return '';
     }
 
     require_once 'dirdb.php';
@@ -1356,7 +1396,8 @@ function _xTradesDisable()
     }
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'The selected trades have been disabled',
-                        JSON_KEY_JS => 'markDisabled("' . $_REQUEST['domain'] . '");'));
+        JSON_KEY_JS => 'markDisabled("' . $_REQUEST['domain'] . '");'));
+    return '';
 }
 
 function _xTradesEmailShow()
@@ -1368,9 +1409,11 @@ function _xTradesEmailShow()
     if( empty($_REQUEST['domain']) )
     {
         JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
+        return '';
     }
 
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-email.php')));
+    return '';
 }
 
 function _xTradesEmail()
@@ -1378,8 +1421,6 @@ function _xTradesEmail()
     global $C, $compiler;
 
     require_once 'mailer.php';
-
-    
 
     $v =& Validator::Get();
 
@@ -1389,7 +1430,8 @@ function _xTradesEmail()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'E-mail could not be sent; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     require_once 'dirdb.php';
@@ -1418,6 +1460,7 @@ function _xTradesEmail()
     }
 
     JSON::Success('E-mail message has been sent to the selected trades');
+    return '';
 }
 
 function _xTradesDeleteShow()
@@ -1427,20 +1470,21 @@ function _xTradesDeleteShow()
     if( empty($_REQUEST['domain']) )
     {
         JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
+        return '';
     }
 
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-delete.php')));
+    return '';
 }
 
 function _xTradesDelete()
 {
-    
-
     trade_delete(explode(',', $_REQUEST['domain']));
 
     JSON::Success(array(JSON_KEY_DIALOG_CLOSE => true,
-                        JSON_KEY_JS => 'markDeleted("' . $_REQUEST['domain'] . '");',
-                        JSON_KEY_MESSAGE => 'The selected trades have been deleted'));
+        JSON_KEY_JS => 'markDeleted("' . $_REQUEST['domain'] . '");',
+        JSON_KEY_MESSAGE => 'The selected trades have been deleted'));
+    return '';
 }
 
 function _xTradesInfoBox()
@@ -1451,68 +1495,78 @@ function _xTradesInfoBox()
     $trade = $db->Retrieve($_REQUEST['trade']);
 
     JSON::Success(array(JSON_KEY_HTML => _xIncludeCapture('trades-info-box.php', $trade)));
+    return '';
 }
 
 function _xTradesReset()
 {
-    
-
     trade_reset(explode(',', $_REQUEST['domain']));
 
     JSON::Success(array(JSON_KEY_JS => 'markReset("' . $_REQUEST['domain'] . '");',
-                        JSON_KEY_MESSAGE => 'The selected trades have been reset'));
+        JSON_KEY_MESSAGE => 'The selected trades have been reset'));
+    return '';
 }
 
 function _xTradesGraphShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-graph.php', $_REQUEST)));
+    return '';
 }
 
 function _xTradesCountriesShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-countries.php', $_REQUEST)));
+    return '';
 }
 
 function _xTradesReferrersShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-referrers.php', $_REQUEST)));
+    return '';
 }
 
 function _xTradesLinksShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-links.php', $_REQUEST)));
+    return '';
 }
 
 function _xTradesPagesShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-pages.php', $_REQUEST)));
+    return '';
 }
 
 function _xTradesLandingsShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-landings.php', $_REQUEST)));
+    return '';
 }
 
 function _xTradesLanguagesShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-languages.php', $_REQUEST)));
+    return '';
 }
 
 function _xTradesDetailedShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-detailed.php', $_REQUEST)));
+    return '';
 }
 
 function _xTradesHistoryShow()
 {
     require_once 'stats.php';
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-historical.php', $_REQUEST)));
+    return '';
 }
 
 function _xGlobalSettingsShow()
 {
     get_config_defaults();
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('global-settings.php')));
+    return '';
 }
 
 function _xGlobalSettingsSave()
@@ -1520,51 +1574,51 @@ function _xGlobalSettingsSave()
 
     // Required fields
     $required = array('site_name' => 'Site Name',
-                      'traffic_url' => 'Traffic URL',
-                      'out_path' => 'Out script path/file',
-                      'base_url' => 'SFTrade URL',
-                      'cookie_domain' => 'Cookie Domain',
-                      'cookie_path' => 'Cookie Path',
-                      'keyphrase' => 'Passphrase',
-                      'email_address' => 'E-mail Address',
-                      'email_name' => 'E-mail Name',
-                      'date_format' => 'Date Format',
-                      'time_format' => 'Time Format',
-                      'captcha_min' => 'Code Length (Min)',
-                      'captcha_max' => 'Code Length (Max)',
-                      'site_name_min' => 'Site Name Length (Min)',
-                      'site_name_max' => 'Site Name Length (Max)',
-                      'site_description_min' => 'Site Description Length (Min)',
-                      'site_description_max' => 'Site Description Length (Max)',
-                      'autostop_interval' => 'Autostop Interval',
-                      'bonus_prod_low' => 'Good Productivity - Range (Low)',
-                      'bonus_prod_high' => 'Good Productivity - Range (High)',
-                      'mod_bonus_prod' => 'Good Productivity - Modifier',
-                      'bonus_unique_low' => 'Good Percentage of Uniques - Range (Low)',
-                      'bonus_unique_high' => 'Good Percentage of Uniques - Range (High)',
-                      'mod_bonus_unique' => 'Good Percentage of Uniques - Modifier',
-                      'bonus_return_low' => 'Low Return Percentage - Range (Low)',
-                      'bonus_return_high' => 'Low Return Percentage - Range (High)',
-                      'mod_bonus_return' => 'Low Return Percentage - Modifier',
-                      'penalty_proxy_low' => 'Too High or Too Low Proxy Percentage - Range (Low)',
-                      'penalty_proxy_high' => 'Too High or Too Low Proxy Percentage - Range (High)',
-                      'mod_penalty_proxy' => 'Too High or Too Low Proxy Percentage - Modifier',
-                      'penalty_unique_low' => 'Too High or Too Low Unique Percentage - Range (Low)',
-                      'penalty_unique_high' => 'Too High or Too Low Unique Percentage - Range (High)',
-                      'mod_penalty_unique' => 'Too High or Too Low Unique Percentage - Modifier',
-                      'penalty_return_low' => 'Too High Return Percentage - Range (Low)',
-                      'penalty_return_high' => 'Too High Return Percentage - Range (High)',
-                      'mod_penalty_return' => 'Too High Return Percentage - Modifier',
-                      'distrib_forces' => 'Forces',
-                      'distrib_main' => 'Main',
-                      'distrib_primary' => 'Primary Bonus',
-                      'distrib_secondary' => 'Secondary Bonus',
-                      'trades_satisfied_url' => 'Trades Satisified URL',
-                      'toplist_rebuild_interval' => 'Toplist Build Interval',
-                      'fast_click' => 'Fast Click',
-                      'count_clicks' => 'Count Clicks',
-                      'cookie_tdxsess' => 'Cookie Session Name',
-                      'cookie_tdxsig' => 'Cookie Sig Name');
+        'traffic_url' => 'Traffic URL',
+        'out_path' => 'Out script path/file',
+        'base_url' => 'SFTrade URL',
+        'cookie_domain' => 'Cookie Domain',
+        'cookie_path' => 'Cookie Path',
+        'keyphrase' => 'Passphrase',
+        'email_address' => 'E-mail Address',
+        'email_name' => 'E-mail Name',
+        'date_format' => 'Date Format',
+        'time_format' => 'Time Format',
+        'captcha_min' => 'Code Length (Min)',
+        'captcha_max' => 'Code Length (Max)',
+        'site_name_min' => 'Site Name Length (Min)',
+        'site_name_max' => 'Site Name Length (Max)',
+        'site_description_min' => 'Site Description Length (Min)',
+        'site_description_max' => 'Site Description Length (Max)',
+        'autostop_interval' => 'Autostop Interval',
+        'bonus_prod_low' => 'Good Productivity - Range (Low)',
+        'bonus_prod_high' => 'Good Productivity - Range (High)',
+        'mod_bonus_prod' => 'Good Productivity - Modifier',
+        'bonus_unique_low' => 'Good Percentage of Uniques - Range (Low)',
+        'bonus_unique_high' => 'Good Percentage of Uniques - Range (High)',
+        'mod_bonus_unique' => 'Good Percentage of Uniques - Modifier',
+        'bonus_return_low' => 'Low Return Percentage - Range (Low)',
+        'bonus_return_high' => 'Low Return Percentage - Range (High)',
+        'mod_bonus_return' => 'Low Return Percentage - Modifier',
+        'penalty_proxy_low' => 'Too High or Too Low Proxy Percentage - Range (Low)',
+        'penalty_proxy_high' => 'Too High or Too Low Proxy Percentage - Range (High)',
+        'mod_penalty_proxy' => 'Too High or Too Low Proxy Percentage - Modifier',
+        'penalty_unique_low' => 'Too High or Too Low Unique Percentage - Range (Low)',
+        'penalty_unique_high' => 'Too High or Too Low Unique Percentage - Range (High)',
+        'mod_penalty_unique' => 'Too High or Too Low Unique Percentage - Modifier',
+        'penalty_return_low' => 'Too High Return Percentage - Range (Low)',
+        'penalty_return_high' => 'Too High Return Percentage - Range (High)',
+        'mod_penalty_return' => 'Too High Return Percentage - Modifier',
+        'distrib_forces' => 'Forces',
+        'distrib_main' => 'Main',
+        'distrib_primary' => 'Primary Bonus',
+        'distrib_secondary' => 'Secondary Bonus',
+        'trades_satisfied_url' => 'Trades Satisified URL',
+        'toplist_rebuild_interval' => 'Toplist Build Interval',
+        'fast_click' => 'Fast Click',
+        'count_clicks' => 'Count Clicks',
+        'cookie_tdxsess' => 'Cookie Session Name',
+        'cookie_tdxsig' => 'Cookie Sig Name');
 
     $v = Validator::Get();
 
@@ -1592,25 +1646,26 @@ function _xGlobalSettingsSave()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Settings could not be saved; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     write_config($_REQUEST);
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Global software settings have been saved!',
-                        JSON_KEY_DIALOG => _xIncludeCapture('global-settings.php')));
+        JSON_KEY_DIALOG => _xIncludeCapture('global-settings.php')));
+    return '';
 }
 
 
 function _xSkimSchemesAddShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('skim-schemes-add.php')));
+    return '';
 }
 
 function _xSkimSchemesAdd()
 {
-    
-
     require_once 'dirdb.php';
 
     $db = new SkimSchemeBaseDB();
@@ -1629,7 +1684,8 @@ function _xSkimSchemesAdd()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Skim scheme could not be added; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     $db->Add($_REQUEST);
@@ -1643,15 +1699,14 @@ function _xSkimSchemesAdd()
     file_write(DIR_SKIM_SCHEMES . '/' .  $_REQUEST['scheme'], file_get_contents(DIR_SKIM_SCHEMES_BASE . '/' . $_REQUEST['scheme']));
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Skim scheme has been successfully added',
-                        JSON_KEY_ROW => _xIncludeCapture('skim-schemes-tr.php', $_REQUEST),
-                        JSON_KEY_ITEM_TYPE => 'skim-schemes',
-                        JSON_KEY_DIALOG => _xIncludeCapture('skim-schemes-add.php')));
+        JSON_KEY_ROW => _xIncludeCapture('skim-schemes-tr.php', $_REQUEST),
+        JSON_KEY_ITEM_TYPE => 'skim-schemes',
+        JSON_KEY_DIALOG => _xIncludeCapture('skim-schemes-add.php')));
+    return '';
 }
 
 function _xSkimSchemesSave()
 {
-    
-
     require_once 'dirdb.php';
 
     $db = new SkimSchemeBaseDB();
@@ -1664,12 +1719,11 @@ function _xSkimSchemesSave()
     }
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Skim scheme settings have been saved'));
+    return '';
 }
 
 function _xSkimSchemesDelete()
 {
-    
-
     require_once 'dirdb.php';
 
     $db = new SkimSchemeBaseDB();
@@ -1679,14 +1733,13 @@ function _xSkimSchemesDelete()
     @unlink(DIR_SKIM_SCHEMES_DYNAMIC . '/' . $_REQUEST['scheme']);
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Skim scheme has been deleted',
-                        JSON_KEY_ITEM_TYPE => 'skim-schemes',
-                        JSON_KEY_ITEM_ID => $_REQUEST['scheme']));
+        JSON_KEY_ITEM_TYPE => 'skim-schemes',
+        JSON_KEY_ITEM_ID => $_REQUEST['scheme']));
+    return '';
 }
 
 function _xSkimSchemesDeleteBulk()
 {
-    
-
     require_once 'dirdb.php';
 
     $db = new SkimSchemeBaseDB();
@@ -1699,19 +1752,19 @@ function _xSkimSchemesDeleteBulk()
     }
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Skim schemes have been deleted'));
+    return '';
 }
 
 function _xSkimSchemesDynamicEditShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('skim-schemes-dynamic.php', $_REQUEST)));
+    return '';
 }
 
 
 
 function _xSkimSchemesDynamicEdit()
 {
-    
-
     require_once 'textdb.php';
 
     $db = new SkimSchemesDynamicDB();
@@ -1739,18 +1792,18 @@ function _xSkimSchemesDynamicEdit()
     }
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Dynamic skim scheme settings have been saved',
-                        JSON_KEY_DIALOG => _xIncludeCapture('skim-schemes-dynamic.php', $_REQUEST)));
+        JSON_KEY_DIALOG => _xIncludeCapture('skim-schemes-dynamic.php', $_REQUEST)));
+    return '';
 }
 
 function _xToplistsAddShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('toplists-add.php')));
+    return '';
 }
 
 function _xToplistsAdd()
 {
-    
-
     $v = Validator::Get();
 
     $v->Register($_REQUEST['outfile'], VT_NOT_EMPTY, 'The Output File field is required');
@@ -1770,7 +1823,8 @@ function _xToplistsAdd()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Toplist could not be added; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     $_REQUEST['categories'] = empty($_REQUEST['categories']) ? '' : join(',', $_REQUEST['categories']);
@@ -1786,9 +1840,10 @@ function _xToplistsAdd()
     $_REQUEST['toplist_id'] = $db->Add($_REQUEST);
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Toplist has been successfully added',
-                        JSON_KEY_ROW => _xIncludeCapture('toplists-tr.php', $_REQUEST),
-                        JSON_KEY_ITEM_TYPE => 'toplists',
-                        JSON_KEY_DIALOG => _xIncludeCapture('toplists-add.php')));
+        JSON_KEY_ROW => _xIncludeCapture('toplists-tr.php', $_REQUEST),
+        JSON_KEY_ITEM_TYPE => 'toplists',
+        JSON_KEY_DIALOG => _xIncludeCapture('toplists-add.php')));
+    return '';
 }
 
 function _xToplistsEditShow()
@@ -1804,12 +1859,11 @@ function _xToplistsEditShow()
     $data['trade_sources'] = unserialize($data['trade_sources']);
 
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('toplists-add.php', $data)));
+    return '';
 }
 
 function _xToplistsEdit()
 {
-    
-
     $v = Validator::Get();
 
     $v->Register($_REQUEST['outfile'], VT_NOT_EMPTY, 'The Output File field is required');
@@ -1829,7 +1883,8 @@ function _xToplistsEdit()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Toplist could not be updated; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     $_REQUEST['categories'] = empty($_REQUEST['categories']) ? '' : join(',', $_REQUEST['categories']);
@@ -1850,36 +1905,33 @@ function _xToplistsEdit()
     $_REQUEST['req_value'] = unserialize($_REQUEST['req_value']);
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Toplist has been successfully updated',
-                        JSON_KEY_ROW => _xIncludeCapture('toplists-tr.php', $_REQUEST),
-                        JSON_KEY_ITEM_ID => $_REQUEST['toplist_id'],
-                        JSON_KEY_ITEM_TYPE => 'toplists',
-                        JSON_KEY_DIALOG => _xIncludeCapture('toplists-add.php', $_REQUEST)));
+        JSON_KEY_ROW => _xIncludeCapture('toplists-tr.php', $_REQUEST),
+        JSON_KEY_ITEM_ID => $_REQUEST['toplist_id'],
+        JSON_KEY_ITEM_TYPE => 'toplists',
+        JSON_KEY_DIALOG => _xIncludeCapture('toplists-add.php', $_REQUEST)));
+    return '';
 }
 
 function _xToplistsDelete()
 {
-    
-
     toplist_delete($_REQUEST['toplist_id']);
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Toplist has been deleted',
-                        JSON_KEY_ITEM_TYPE => 'toplists',
-                        JSON_KEY_ITEM_ID => $_REQUEST['toplist_id']));
+        JSON_KEY_ITEM_TYPE => 'toplists',
+        JSON_KEY_ITEM_ID => $_REQUEST['toplist_id']));
+    return '';
 }
 
 function _xToplistsDeleteBulk()
 {
-    
-
     toplist_delete(explode(',', $_REQUEST['toplist_id']));
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Toplists have been deleted'));
+    return '';
 }
 
 function _xToplistsBuild()
 {
-    
-
     require_once 'textdb.php';
 
     $db = new ToplistsDB();
@@ -1892,20 +1944,21 @@ function _xToplistsBuild()
     }
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Selected toplists have been built<br>If one or more of your toplists does not get generated, check the logs/error.log file for possible error messages'));
+    return '';
 }
 
 function _xToplistsBuildAll()
 {
-    
-
     build_all_toplists();
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'All toplists have been built<br>If one or more of your toplists does not get generated, check the logs/error.log file for possible error messages'));
+    return '';
 }
 
 function _xUrlEncodeShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('url-encode.php')));
+    return '';
 }
 
 function _xUrlEncode()
@@ -1940,6 +1993,7 @@ function _xUrlEncode()
     $_REQUEST['urls'] = join(STRING_LF_UNIX, $urls);
 
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('url-encode.php')));
+    return '';
 }
 
 function _xTemplatesRecompileAll()
@@ -1947,9 +2001,11 @@ function _xTemplatesRecompileAll()
     if( ($result = recompile_templates()) !== true )
     {
         JSON::Warning($result);
+        return '';
     }
 
     JSON::Success('All templates have been recompiled!');
+    return '';
 }
 
 function _xEmailTemplatesLoad()
@@ -1960,14 +2016,13 @@ function _xEmailTemplatesLoad()
     $body = string_format_lf(join('', $code));
 
     JSON::Success(array(JSON_KEY_SUBJECT => $subject,
-                        JSON_KEY_BODY => $body));
+        JSON_KEY_BODY => $body));
+    return '';
 }
 
 function _xEmailTemplatesSave()
 {
     global $compiler;
-
-    
 
     $filename = file_sanitize($_REQUEST['template'], 'tpl', 'tpl');
     $template = DIR_TEMPLATES . "/$filename";
@@ -1976,37 +2031,39 @@ function _xEmailTemplatesSave()
     if( !is_writable($template) )
     {
         JSON::Warning('Template file has incorrect permissions; change to 666 then try again');
+        return '';
     }
 
     require_once 'compiler.php';
 
     $template_code = $_REQUEST['subject'] . STRING_LF_UNIX .
-                     string_format_lf($_REQUEST['template_code']);
+        string_format_lf($_REQUEST['template_code']);
 
     if( ($code = $compiler->Compile($template_code)) === false )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Template contains errors',
-                                   JSON_KEY_WARNINGS => $compiler->GetErrors()));
+            JSON_KEY_WARNINGS => $compiler->GetErrors()));
+        return '';
     }
 
     $template_code = $_REQUEST['subject'] . STRING_LF_UNIX .
-                     string_format_lf($_REQUEST['template_code']);
+        string_format_lf($_REQUEST['template_code']);
 
     file_write($template, $template_code);
     file_write($compiled, $code);
     JSON::Success('Template has been successfully saved');
+    return '';
 }
 
 function _xEmailTemplatesReplaceShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('email-templates-replace.php')));
+    return '';
 }
 
 function _xEmailTemplatesReplace()
 {
     global $compiler;
-
-    
 
     $v =& Validator::Get();
 
@@ -2028,7 +2085,8 @@ function _xEmailTemplatesReplace()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Search and replace could not be executed; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     require_once 'compiler.php';
@@ -2052,19 +2110,19 @@ function _xEmailTemplatesReplace()
     }
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Search and replace has been completed.  Templates updated: ' . format_int_to_string($replacements),
-                        JSON_KEY_DIALOG => _xIncludeCapture('email-templates-replace.php')));
+        JSON_KEY_DIALOG => _xIncludeCapture('email-templates-replace.php')));
+    return '';
 }
 
 function _xEmailSignatureShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('email-signature.php')));
+    return '';
 }
 
 function _xEmailSignatureSave()
 {
     global $compiler;
-
-    
 
     $v =& Validator::Get();
 
@@ -2076,6 +2134,7 @@ function _xEmailSignatureSave()
     if( !is_writable($greeting_template) || !is_writable($signature_template) )
     {
         JSON::Warning('Both the email-global-greeting.tpl and email-global-signature.tpl files must have 666 permissions.  Please change the permissions on these files, and then try saving again.');
+        return '';
     }
 
     require_once 'compiler.php';
@@ -2087,7 +2146,8 @@ function _xEmailSignatureSave()
     file_write($signature_template, $_REQUEST['signature']);
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'The e-mail greeting and signature have been saved',
-                        JSON_KEY_DIALOG => _xIncludeCapture('email-signature.php')));
+        JSON_KEY_DIALOG => _xIncludeCapture('email-signature.php')));
+    return '';
 }
 
 function _xSiteTemplatesLoad()
@@ -2096,13 +2156,12 @@ function _xSiteTemplatesLoad()
     $code = string_format_lf(file_get_contents($template));
 
     JSON::Success(array(JSON_KEY_CODE => $code));
+    return '';
 }
 
 function _xSiteTemplatesSave()
 {
     global $compiler;
-
-    
 
     $filename = file_sanitize($_REQUEST['template'], 'tpl,css', 'tpl');
     $template = DIR_TEMPLATES . "/$filename";
@@ -2111,6 +2170,7 @@ function _xSiteTemplatesSave()
     if( !is_writeable($template) )
     {
         JSON::Warning('Template file has incorrect permissions; change to 666 then try again');
+        return '';
     }
 
     require_once 'compiler.php';
@@ -2118,25 +2178,26 @@ function _xSiteTemplatesSave()
     if( ($code = $compiler->Compile($_REQUEST['template_code'])) === false )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Template contains errors',
-                                   JSON_KEY_WARNINGS => $compiler->GetErrors()));
+            JSON_KEY_WARNINGS => $compiler->GetErrors()));
+        return '';
     }
 
     file_write($template, $_REQUEST['template_code']);
     file_write($compiled, $code);
 
     JSON::Success('Template has been successfully saved');
+    return '';
 }
 
 function _xSiteTemplatesReplaceShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('site-templates-replace.php')));
+    return '';
 }
 
 function _xSiteTemplatesReplace()
 {
     global $compiler;
-
-    
 
     $v =& Validator::Get();
 
@@ -2158,7 +2219,8 @@ function _xSiteTemplatesReplace()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Search and replace could not be executed; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     require_once 'compiler.php';
@@ -2182,19 +2244,19 @@ function _xSiteTemplatesReplace()
         }
     }
 
-    JSON::Success(array(JSON_KEY_MESSAGE => 'Search and replace has been completed.  Templates updated: ' . format_int_to_string($replacements),
-                        JSON_KEY_DIALOG => _xIncludeCapture('site-templates-replace.php')));
+    JSON::Success(array(JSON_KEY_MESSAGE => 'Search and replace has been completed. Templates updated: ' . format_int_to_string($replacements),
+        JSON_KEY_DIALOG => _xIncludeCapture('site-templates-replace.php')));
+    return '';
 }
 
 function _xGroupsShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('groups.php')));
+    return '';
 }
 
 function _xGroupsSave()
 {
-    
-
     $v =& Validator::Get();
     $v->Register(FILE_GROUPS, VT_FILE_IS_WRITEABLE, 'The ' . FILE_GROUPS . ' file has incorrect permissions; change them to 666');
     $v->Register($_REQUEST['groups'], VT_REGEX_NO_MATCH, 'Group names may not contain commas', '~,~');
@@ -2202,24 +2264,25 @@ function _xGroupsSave()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Groups could not be updated; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     file_write(FILE_GROUPS, string_remove_blank_lines($_REQUEST['groups']));
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Groups have been successfully updated',
-                        JSON_KEY_DIALOG => _xIncludeCapture('groups.php')));
+        JSON_KEY_DIALOG => _xIncludeCapture('groups.php')));
+    return '';
 }
 
 function _xCategoriesShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('categories.php')));
+    return '';
 }
 
 function _xCategoriesSave()
 {
-    
-
     $v =& Validator::Get();
     $v->Register(FILE_CATEGORIES, VT_FILE_IS_WRITEABLE, 'The ' . FILE_CATEGORIES . ' file has incorrect permissions; change them to 666');
     $v->Register($_REQUEST['categories'], VT_REGEX_NO_MATCH, 'Category names may not contain commas', '~,~');
@@ -2227,24 +2290,25 @@ function _xCategoriesSave()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Categories could not be updated; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     file_write(FILE_CATEGORIES, string_remove_blank_lines($_REQUEST['categories']));
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Categories have been successfully updated',
-                        JSON_KEY_DIALOG => _xIncludeCapture('categories.php')));
+        JSON_KEY_DIALOG => _xIncludeCapture('categories.php')));
+    return '';
 }
 
 function _xCountriesShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('countries.php')));
+    return '';
 }
 
 function _xCountriesSave()
 {
-    
-
     global $geoip_country_codes, $geoip_country_names;
 
     require_once 'geoip-utility.php';
@@ -2255,7 +2319,8 @@ function _xCountriesSave()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Country settings could not be updated; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     $fp = fopen(FILE_COUNTRIES, 'r+');
@@ -2279,18 +2344,18 @@ function _xCountriesSave()
     fclose($fp);
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Country settings have been successfully updated',
-                        JSON_KEY_DIALOG => _xIncludeCapture('countries.php')));
+        JSON_KEY_DIALOG => _xIncludeCapture('countries.php')));
+    return '';
 }
 
 function _xBlacklistShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('blacklist.php')));
+    return '';
 }
 
 function _xBlacklistSave()
 {
-    
-
     $v =& Validator::Get();
     $v->Register(FILE_BLACKLIST_DNS, VT_FILE_IS_WRITEABLE, 'The ' . FILE_BLACKLIST_DNS . ' file has incorrect permissions; change them to 666');
     $v->Register(FILE_BLACKLIST_DOMAIN, VT_FILE_IS_WRITEABLE, 'The ' . FILE_BLACKLIST_DOMAIN . ' file has incorrect permissions; change them to 666');
@@ -2303,7 +2368,8 @@ function _xBlacklistSave()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Blacklist could not be updated; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     foreach( $_REQUEST['bl'] as $file => $items )
@@ -2313,17 +2379,18 @@ function _xBlacklistSave()
     }
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Blacklist has been successfully updated',
-                        JSON_KEY_DIALOG => _xIncludeCapture('blacklist.php')));
+        JSON_KEY_DIALOG => _xIncludeCapture('blacklist.php')));
+    return '';
 }
 
 function _xSearchEnginesShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('search-engines.php')));
+    return '';
 }
 
 function _xSearchEnginesSave()
 {
-
     $v =& Validator::Get();
     $v->Register(FILE_SEARCH_ENGINES, VT_FILE_IS_WRITEABLE, 'The ' . FILE_SEARCH_ENGINES . ' file has incorrect permissions; change them to 666');
     $v->Register(FILE_IN_PHP, VT_FILE_IS_WRITEABLE, 'The ' . FILE_IN_PHP . ' script must have 666 permissions');
@@ -2332,7 +2399,8 @@ function _xSearchEnginesSave()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Search engines could not be updated; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     $domains = array();
@@ -2349,10 +2417,10 @@ function _xSearchEnginesSave()
     // Update the in.php file
     $in = file_get_contents(FILE_IN_PHP);
     $in = preg_replace(array('~/\*#<ENGINES>\*/.*?/\*#</ENGINES>\*/~',
-                             '~/\*#<ENGINE_PARAMS>\*/.*?/\*#</ENGINE_PARAMS>\*/~'),
-                       array('/*#<ENGINES>*/' . (count($domains) ? "'" . join("','", $domains) . "'" : '') . '/*#</ENGINES>*/',
-                             '/*#<ENGINE_PARAMS>*/' . (count($params) ? "'" . join("','", $params) . "'" : '') . '/*#</ENGINE_PARAMS>*/'),
-                       $in);
+        '~/\*#<ENGINE_PARAMS>\*/.*?/\*#</ENGINE_PARAMS>\*/~'),
+        array('/*#<ENGINES>*/' . (count($domains) ? "'" . join("','", $domains) . "'" : '') . '/*#</ENGINES>*/',
+            '/*#<ENGINE_PARAMS>*/' . (count($params) ? "'" . join("','", $params) . "'" : '') . '/*#</ENGINE_PARAMS>*/'),
+        $in);
 
     file_write(FILE_IN_PHP, $in, 0666);
 
@@ -2361,42 +2429,43 @@ function _xSearchEnginesSave()
     file_write(FILE_SEARCH_ENGINES, $engines);
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Search engines have been successfully updated',
-                        JSON_KEY_DIALOG => _xIncludeCapture('search-engines.php')));
+        JSON_KEY_DIALOG => _xIncludeCapture('search-engines.php')));
+    return '';
 }
 
 function _xTradeRulesShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trade-rules.php')));
+    return '';
 }
 
 function _xTradeRulesSave()
 {
-    
-
     $v =& Validator::Get();
     $v->Register(FILE_TRADE_RULES, VT_FILE_IS_WRITEABLE, 'The ' . FILE_TRADE_RULES . ' file has incorrect permissions; change them to 666');
 
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Trade rules could not be updated; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     file_write(FILE_TRADE_RULES, string_remove_blank_lines($_REQUEST['rules']));
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Trade rules have been successfully updated',
-                        JSON_KEY_DIALOG => _xIncludeCapture('trade-rules.php')));
+        JSON_KEY_DIALOG => _xIncludeCapture('trade-rules.php')));
+    return '';
 }
 
 function _xChangeLoginShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('change-login.php')));
+    return '';
 }
 
 function _xChangeLogin()
 {
-    
-
     $v =& Validator::Get();
 
     list($username, $password) = explode('|', file_first_line(FILE_CP_USER));
@@ -2410,13 +2479,15 @@ function _xChangeLogin()
     if( !$v->Validate() )
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Login information could not be updated; please fix the following items',
-                                   JSON_KEY_WARNINGS => $v->GetErrors()));
+            JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     file_write(FILE_CP_USER, $_REQUEST['username'] . '|' . sha1($_REQUEST['password']));
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Control panel login has been successfully updated',
-                        JSON_KEY_DIALOG => _xIncludeCapture('change-login.php')));
+        JSON_KEY_DIALOG => _xIncludeCapture('change-login.php')));
+    return '';
 }
 
 function _xIncludeCapture($file, $original = null, $vars = array())
@@ -2433,12 +2504,14 @@ function _xIncludeCapture($file, $original = null, $vars = array())
 function _xFunctionMissing()
 {
     JSON::Error('Function argument was missing from the request');
+    return '';
 }
 
 
 function _xOutListSettingsShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('outlist-settings.php')));
+    return '';
 }
 
 function _xOutListSettingsSave()
@@ -2451,6 +2524,7 @@ function _xOutListSettingsSave()
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Outlist settings could not be updated; please fix the following items',
             JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     $outlist_weights = array();
@@ -2476,17 +2550,18 @@ function _xOutListSettingsSave()
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Outlist settings have been successfully updated',
         JSON_KEY_DIALOG => _xIncludeCapture('outlist-settings.php')));
+    return '';
 }
 
 
 function _xSpidersShow()
 {
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('spiders.php')));
+    return '';
 }
 
 function _xSpidersSave()
 {
-
     $v =& Validator::Get();
     $v->Register(FILE_SPIDERS, VT_FILE_IS_WRITEABLE, 'The ' . FILE_SPIDERS . ' file has incorrect permissions; change them to 666');
     $v->Register(FILE_IN_PHP, VT_FILE_IS_WRITEABLE, 'The ' . FILE_IN_PHP . ' script must have 666 permissions');
@@ -2495,6 +2570,7 @@ function _xSpidersSave()
     {
         JSON::Warning(array(JSON_KEY_MESSAGE => 'Spiders could not be updated; please fix the following items',
             JSON_KEY_WARNINGS => $v->GetErrors()));
+        return '';
     }
 
     $uas = array();
@@ -2528,7 +2604,6 @@ function _xSpidersSave()
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Spiders have been successfully updated',
         JSON_KEY_DIALOG => _xIncludeCapture('spiders.php')));
+    return '';
 }
-
-
 
