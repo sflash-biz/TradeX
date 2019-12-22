@@ -53,7 +53,7 @@
                 <div class="field hideable percent scheme">
                   <label>Content URL:</label>
                   <span>
-                    <input type="text" name="content_url" value="" size="80">
+                    <input type="text" name="content_url" value="" size="70">
                   </span>
                 </div>
 

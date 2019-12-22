@@ -27,22 +27,22 @@ check_image_resizer();
 
                     <div class="field">
                         <label>Traffic URL:</label>
-                        <span><input type="text" size="80" value="<?php echo $C['traffic_url']; ?>" name="traffic_url"></span>
+                        <span><input type="text" size="70" value="<?php echo $C['traffic_url']; ?>" name="traffic_url"></span>
                     </div>
 
                     <div class="field">
                         <label>CMS:</label>
-                        <span><input type="text" size="80" value="<?php echo $C['cms_url']; ?>" name="cms_url"></span>
+                        <span><input type="text" size="70" value="<?php echo $C['cms_url']; ?>" name="cms_url"></span>
                     </div>
 
                     <div class="field">
                         <label>Out script path/filename:</label>
-                        <span><input type="text" size="80" value="<?php echo $C['out_path']; ?>" name="out_path"></span>
+                        <span><input type="text" size="70" value="<?php echo $C['out_path']; ?>" name="out_path"></span>
                     </div>
 
                     <div class="field">
                         <label>SFTrade URL:</label>
-                        <span><input type="text" size="80" value="<?php echo $C['base_url']; ?>" name="base_url"></span>
+                        <span><input type="text" size="70" value="<?php echo $C['base_url']; ?>" name="base_url"></span>
                     </div>
 
                     <div class="field">
@@ -298,7 +298,7 @@ check_image_resizer();
 
                     <div class="field">
                         <label>Trigger Strings:</label>
-                        <span><input type="text" size="80" value="<?php echo $C['thumb_trigger_strings']; ?>" name="thumb_trigger_strings"></span>
+                        <span><input type="text" size="70" value="<?php echo $C['thumb_trigger_strings']; ?>" name="thumb_trigger_strings"></span>
                     </div>
 
                     <div class="field">
@@ -329,7 +329,7 @@ check_image_resizer();
 
                     <div class="field">
                         <label>mogrify Options:</label>
-                        <span><input type="text" size="80" value="<?php echo $C['magick_mogrify_options']; ?>" name="magick_mogrify_options"></span>
+                        <span><input type="text" size="70" value="<?php echo $C['magick_mogrify_options']; ?>" name="magick_mogrify_options"></span>
                     </div>
 
                     <div class="field">
@@ -484,7 +484,7 @@ check_image_resizer();
 
                     <div class="field">
                         <label>Trades Satisfied URL:</label>
-                        <span><input type="text" size="80" value="<?php echo $C['trades_satisfied_url']; ?>" name="trades_satisfied_url"></span>
+                        <span><input type="text" size="70" value="<?php echo $C['trades_satisfied_url']; ?>" name="trades_satisfied_url"></span>
                     </div>
 
                     <div class="field">

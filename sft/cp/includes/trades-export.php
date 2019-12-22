@@ -13,7 +13,7 @@
               <div class="field">
                 <label class="short">Format:</label>
                 <span>
-                  <input type="text" name="format" size="90" value="{$domain}|{$return_url}|{$site_name}|{$site_description}|{$email}|{$icq}|{$nickname}">
+                  <input type="text" name="format" size="70" value="{$domain}|{$return_url}|{$site_name}|{$site_description}|{$email}|{$icq}|{$nickname}">
 
                   <?php
                   $exportables = array('{$domain}' => "Trade's domain name",

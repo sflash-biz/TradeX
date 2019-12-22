@@ -92,7 +92,7 @@
                 <?php if( !$default && !$bulk ): ?>
                 <div class="field">
                   <label>Return URL:</label>
-                  <span><input type="text" name="return_url" value="<?php echo $item['return_url']; ?>" size="80"></span>
+                  <span><input type="text" name="return_url" value="<?php echo $item['return_url']; ?>" size="70"></span>
                 </div>
                 <?php endif; ?>
 
@@ -134,12 +134,12 @@
                 </div>
 
                 <div class="field">
-                  <label>Nick:</label>
-                  <span><input type="text" name="nickname" value="<?php echo $item['nickname']; ?>" size="15"></span>
-                  <label class="very-short">ICQ #:</label>
-                  <span><input type="text" name="icq" value="<?php echo $item['icq']; ?>" size="15"></span>
-                  <label class="very-short">Password:</label>
-                  <span><input type="text" name="password" value="" size="15"><?php if( !empty($item['password']) ): ?> <img src="images/key-16x16.png" title="Password Set" style="vertical-align: middle;"><?php endif; ?></span>
+                    <label>Nick:</label>
+                    <span><input type="text" name="nickname" value="<?php echo $item['nickname']; ?>" size="12"></span>
+                    <label class="very-short">ICQ #:</label>
+                    <span><input type="text" name="icq" value="<?php echo $item['icq']; ?>" size="12"></span>
+                    <label class="very-short">Password:</label>
+                    <span><input type="text" name="password" value="" size="12"><?php if( !empty($item['password']) ): ?> <img src="images/key-16x16.png" title="Password Set" style="vertical-align: middle;"><?php endif; ?></span>
                 </div>
 
                 <div class="field">
@@ -157,7 +157,7 @@
 
                 <div class="field">
                   <label>Site Description:</label>
-                  <span><input type="text" name="site_description" value="<?php echo $item['site_description']; ?>" size="90"></span>
+                  <span><input type="text" name="site_description" value="<?php echo $item['site_description']; ?>" size="70"></span>
                 </div>
                 <?php endif; ?>
 
@@ -185,7 +185,7 @@
                 <?php if( !$default && !$bulk  ): ?>
                 <div class="field">
                   <label>Grabber URL:</label>
-                  <span><input type="text" name="grabber_url" value="<?php echo $item['grabber_url']; ?>" size="90"></span>
+                  <span><input type="text" name="grabber_url" value="<?php echo $item['grabber_url']; ?>" size="70"></span>
                 </div>
 
                 <div class="field">
@@ -200,7 +200,7 @@
 
                 <div class="field">
                   <label>Banner:</label>
-                  <span><input type="text" name="banner" value="<?php echo $item['banner']; ?>" size="90"></span>
+                  <span><input type="text" name="banner" value="<?php echo $item['banner']; ?>" size="70"></span>
                 </div>
 
                 <div class="field">

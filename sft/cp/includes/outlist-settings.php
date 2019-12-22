@@ -13,10 +13,10 @@ global $g_counter, $g_color;
         <div id="dialog-panel">
             <div style="padding-top: 2px;">
 
-                <input type="button" id="dialog-button-default-1" value="Load Default 1" style="width: 23%; margin-bottom: 3px;">
-                <input type="button" id="dialog-button-default-2" value="Load Default 2" style="width: 23%; margin-bottom: 3px;">
-                <input type="button" id="dialog-button-default-3" value="Load Default 3" style="width: 23%; margin-bottom: 3px;">
-                <input type="button" id="dialog-button-default-4" value="Load Default 4" style="width: 23%; margin-bottom: 3px;">
+                <input type="button" id="dialog-button-default-1" value="Load Default 1" style="width: 23%; margin: 0 0 5px 5px;">
+                <input type="button" id="dialog-button-default-2" value="Load Default 2" style="width: 23%; margin: 0 0 5px 5px;">
+                <input type="button" id="dialog-button-default-3" value="Load Default 3" style="width: 23%; margin: 0 0 5px 5px;">
+                <input type="button" id="dialog-button-default-4" value="Load Default 4" style="width: 23%; margin: 0 0 5px 5px;">
 
                 <?php _outlist_table_header(); ?>
                 <tbody>

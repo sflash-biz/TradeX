@@ -57,17 +57,17 @@
                     <input type="hidden" name="flag_update[nickname]" value="0">
                     Nick:
                   </label>
-                  <span><input type="text" name="nickname" value="" size="15"></span>
+                  <span><input type="text" name="nickname" value="" size="12"></span>
                   <label class="very-short updatefield">
                     <input type="hidden" name="flag_update[icq]" value="0">
                     ICQ #:
                   </label>
-                  <span><input type="text" name="icq" value="" size="15"></span>
+                  <span><input type="text" name="icq" value="" size="12"></span>
                   <label class="very-short updatefield">
                     <input type="hidden" name="flag_update[password]" value="0">
                     Password:
                   </label>
-                  <span><input type="text" name="password" value="" size="15"></span>
+                  <span><input type="text" name="password" value="" size="12"></span>
                 </div>
 
 

@@ -24,7 +24,7 @@
 
               <div class="field">
                 <label title="The full URL to the SFTrade control panel">Control Panel URL:</label>
-                <span><input name="url" value="<?php echo $item['url']; ?>" size="80" type="text"></span>
+                <span><input name="url" value="<?php echo $item['url']; ?>" size="60" type="text"></span>
               </div>
 
               <div class="field">
