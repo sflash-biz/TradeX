@@ -564,4 +564,3 @@ class SkimSchemesDynamicDB extends TextDB
     }
 }
 
-?>

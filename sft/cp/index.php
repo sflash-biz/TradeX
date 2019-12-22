@@ -224,4 +224,4 @@ function _xLogout()
     include 'login.php';
 }
 
-?>
+

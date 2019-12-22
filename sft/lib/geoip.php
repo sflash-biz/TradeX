@@ -54,4 +54,3 @@ function geoip_country_id($ip_address)
     return $country_id;
 }
 
-?>

@@ -92,4 +92,3 @@ function error_handler($errno, $errstr, $errfile, $errline)
 
 require_once 'config.php';
 
-?>

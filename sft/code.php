@@ -9,4 +9,3 @@ headers_no_cache();
 $captcha = new Captcha();
 $captcha->GenerateAndDisplay();
 
-?>

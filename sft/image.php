@@ -92,4 +92,3 @@ readfile($C['dir_base'] . '/cp/images/' . $images[array_rand($images)]);
 //fclose($fp);
 
 
-?>

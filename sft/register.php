@@ -212,4 +212,3 @@ function _xConfirmShow()
     $t->Display('register-confirm.tpl');
 }
 
-?>

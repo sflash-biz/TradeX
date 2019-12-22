@@ -174,4 +174,3 @@ function _xForgotPasswordConfirmed()
     $t->Display('trade-stats-forgot-confirmed.tpl');
 }
 
-?>

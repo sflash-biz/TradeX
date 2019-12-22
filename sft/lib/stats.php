@@ -1215,4 +1215,3 @@ class StatsHistory
     }
 }
 
-?>

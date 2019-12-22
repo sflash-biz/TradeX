@@ -528,4 +528,3 @@ function microtime_float()
     return ((float)$usec + (float)$sec);
 }
 
-?>

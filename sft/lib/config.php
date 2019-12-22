@@ -89,4 +89,4 @@ $C['cookie_tdxsig'] = 'sftsi';
 $C['out_path'] = '/var/www/html/sft/out.php';
 $C['cms_url'] = 'http://www.porns.nu/';
 $C['cookie_tdxbookmark'] = 'sftbook';
-?>
+

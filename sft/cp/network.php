@@ -150,4 +150,3 @@ function _xSync()
     network_success(true);
 }
 
-?>

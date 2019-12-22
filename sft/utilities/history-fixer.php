@@ -24,4 +24,3 @@ foreach( dir_read_files(DIR_TRADES) as $trade )
 
 echo "DONE!\n";
 
-?>

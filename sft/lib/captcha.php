@@ -250,4 +250,3 @@ function imagettfbboxextended($size, $angle, $fontfile, $text)
     return $bbox;
 }
 
-?>

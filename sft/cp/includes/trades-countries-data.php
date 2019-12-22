@@ -21,4 +21,4 @@ foreach( $geoip_country_codes as $i => $cc ) {
 }
 echo "};\n";
 
-?>
+
