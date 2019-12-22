@@ -181,6 +181,7 @@ function _xUpdateGetInstaller()
             {
                 JSON::Success();
             }
+            return '';
         }
         else if( preg_match('~X-Error: ([a-z0-9_]+)~i', $http->response_headers, $matches) )
         {
@@ -190,6 +191,7 @@ function _xUpdateGetInstaller()
         {
             JSON::Error('Download from update host failed, please try again' . var_export($http->response_headers, true));
         }
+        return '';
     }
     else
     {
