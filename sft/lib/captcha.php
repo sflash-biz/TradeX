@@ -18,7 +18,7 @@ class Captcha
 
     var $background_color = array(0xFF, 0xFF, 0xFF);
 
-    function Captcha()
+    function __construct()
     {
 
     }

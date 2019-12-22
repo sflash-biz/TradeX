@@ -372,7 +372,7 @@ class TextDB
 class ToplistsDB extends TextDB
 {
 
-    function ToplistsDB()
+    function __construct()
     {
         $this->db_file = FILE_TOPLISTS;
         $this->primary_key = 'toplist_id';
@@ -407,7 +407,7 @@ class ToplistsDB extends TextDB
 class NetworkDB extends TextDB
 {
 
-    function NetworkDB()
+    function __construct()
     {
         $this->db_file = FILE_NETWORK_SITES;
         $this->primary_key = 'domain';
@@ -435,7 +435,7 @@ class NetworkDB extends TextDB
 class CaptchasDB extends TextDB
 {
 
-    function CaptchasDB()
+    function __construct()
     {
         $this->db_file = FILE_CAPTCHAS;
         $this->primary_key = 'session';
@@ -468,7 +468,7 @@ class CaptchasDB extends TextDB
 class RegisterConfirmsDB extends TextDB
 {
 
-    function RegisterConfirmsDB()
+    function __construct()
     {
         $this->db_file = FILE_REGISTER_CONFIRMS;
         $this->primary_key = 'confirm_id';
@@ -501,7 +501,7 @@ class RegisterConfirmsDB extends TextDB
 class PasswordConfirmsDB extends TextDB
 {
 
-    function PasswordConfirmsDB()
+    function __construct()
     {
         $this->db_file = FILE_PASSWORD_CONFIRMS;
         $this->primary_key = 'confirm_id';
@@ -534,7 +534,7 @@ class PasswordConfirmsDB extends TextDB
 class SkimSchemesDynamicDB extends TextDB
 {
 
-    function SkimSchemesDynamicDB()
+    function __construct()
     {
         $this->db_file = FILE_TOPLISTS;
         $this->primary_key = 'start_day';

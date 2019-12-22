@@ -200,7 +200,7 @@ class DirDB
 
 class SkimSchemeBaseDB extends DirDB
 {
-    function SkimSchemeBaseDB()
+    function __construct()
     {
         $this->directory = DIR_SKIM_SCHEMES_BASE;
         $this->primary_key = 'scheme';
@@ -221,7 +221,7 @@ class SkimSchemeBaseDB extends DirDB
 
 class TradeDB extends DirDB
 {
-    function TradeDB()
+    function __construct()
     {
         $this->directory = DIR_TRADES;
         $this->primary_key = 'domain';
@@ -273,7 +273,7 @@ class TradeDB extends DirDB
 
 class SystemDB extends DirDB
 {
-    function SystemDB()
+    function __construct()
     {
         $this->directory = DIR_SYSTEM;
         $this->primary_key = 'domain';

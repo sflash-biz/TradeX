@@ -31,7 +31,7 @@ class Compiler
 
     var $literal_close_tags = array('/php', '/phpcode', '/literal');
 
-    function Compiler()
+    function __construct()
     {
     }
 

@@ -309,7 +309,7 @@ class StatsHourly
     var $skim_24 = 0;
     var $return_24 = 0;
 
-    function StatsHourly($trade = null)
+    function __construct($trade = null)
     {
         if( !is_array($trade) )
         {
@@ -511,7 +511,7 @@ class StatsOverall
     var $pos_outlist_forces = NULL;
     var $ignore_requirements = FALSE;
 
-    function StatsOverall($trade, $stats60 = null, $stats24 = null, $se_stats24 = null)
+    function __construct($trade, $stats60 = null, $stats24 = null, $se_stats24 = null)
     {
         $this->trade = $trade;
 
@@ -942,7 +942,7 @@ class StatsDetailed
     var $c_link = array();
     var $c_lang = array();
 
-    function StatsDetailed($trade, $amount = 10)
+    function __construct($trade, $amount = 10)
     {
         $db = get_trade_db($trade);
         $stats_dir = get_trade_stats_dir($trade);
@@ -1151,7 +1151,7 @@ class StatsHistory
     var $history_file;
     var $stats;
 
-    function StatsHistory($trade, $start, $end, $regex_replace)
+    function __construct($trade, $start, $end, $regex_replace)
     {
         $this->trade = $trade;
         $this->history_file = empty($trade) ? DIR_DATA . '/history' : (is_system_trade($trade) ? DIR_SYSTEM_STATS : DIR_TRADE_STATS) . "/$trade-history";

@@ -33,7 +33,7 @@ class NetworkRequest
     var $post_data;
     var $error;
 
-    function NetworkRequest($site, $fnc, $extra_post = array())
+    function __construct($site, $fnc, $extra_post = array())
     {
         $this->url = $site['url'] . NETWORK_SCRIPT;
         $this->post_data = array_merge(array('cp_username' => $site['username'],

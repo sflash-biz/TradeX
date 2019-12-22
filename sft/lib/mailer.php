@@ -19,7 +19,7 @@ class Mailer extends PHPMailer
 
     var $signature;
 
-    function Mailer()
+    function __construct()
     {
         global $C;
 
@@ -1480,7 +1480,7 @@ class POP3
 
 
     /** @noinspection PhpConstructorStyleInspection */
-    function POP3 ()
+    function __construct ()
     {
       $this->pop_conn = 0;
       $this->connected = false;
@@ -1752,7 +1752,7 @@ class SMTP
   var $helo_rply;      # the reply the server sent to us for HELO
 
 
-  function SMTP() {
+  function __construct() {
     $this->smtp_conn = 0;
     $this->error = null;
     $this->helo_rply = null;

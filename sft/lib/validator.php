@@ -58,7 +58,7 @@ class Validator
 
     var $set_errors;
 
-    function Validator()
+    function __construct()
     {
         $this->Reset();
     }

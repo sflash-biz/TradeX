@@ -41,7 +41,7 @@ class HTTP
 
     var $error = null;
 
-    function HTTP()
+    function __construct()
     {
     }
 
