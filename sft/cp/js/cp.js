@@ -335,6 +335,7 @@ function globalAjaxError(e, xhr, text, exception)
             if( exception )
             {
                 detail_message = 'Exception: ' + exception.message;
+                extras = '';
             }
             break;
     }
