@@ -57,11 +57,11 @@
 
                 <div class="field">
                   <label>Nick:</label>
-                  <span><input type="text" name="nickname" value="<?php echo $item['nickname']; ?>" size="15"></span>
+                  <span><input type="text" name="nickname" value="<?php echo $item['nickname']; ?>" size="12"></span>
                   <label class="very-short">ICQ #:</label>
-                  <span><input type="text" name="icq" value="<?php echo $item['icq']; ?>" size="15"></span>
+                  <span><input type="text" name="icq" value="<?php echo $item['icq']; ?>" size="12"></span>
                   <label class="very-short">Password:</label>
-                  <span><input type="text" name="password" value="" size="15"><?php if( !empty($item['password']) ): ?> <img src="images/key-16x16.png" title="Password Set" style="vertical-align: middle;"><?php endif; ?></span>
+                  <span><input type="text" name="password" value="" size="12"><?php if( !empty($item['password']) ): ?> <img src="images/key-16x16.png" title="Password Set" style="vertical-align: middle;"><?php endif; ?></span>
                 </div>
 
                 <div class="field">
