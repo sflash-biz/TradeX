@@ -30,6 +30,12 @@ class Compiler
     var $defines;
 
     var $literal_close_tags = array('/php', '/phpcode', '/literal');
+    /**
+     * @var bool
+     */
+    private $has_nocache;
+    private $handlers;
+    private $current_line;
 
     function __construct()
     {
@@ -315,9 +321,9 @@ class Compiler
             case 'template':
                 return $this->CompileTemplateTag($tag['attributes']);
 
-            case 'reasons':
+/*            case 'reasons':
                 $this->has_db = true;
-                return $this->CompileReasonsTag($tag['attributes']);
+                return $this->CompileReasonsTag($tag['attributes']);*/
 
             default:
                 // Call tag handler function in descendant class
@@ -470,7 +476,7 @@ class Compiler
 
         if( $attributes['from'] == $attributes['var'] )
         {
-            trigger("{foreach} tag 'var' and 'from' attributes cannot be set to the same value", E_USER_NOTICE);
+            trigger_error("{foreach} tag 'var' and 'from' attributes cannot be set to the same value", E_USER_NOTICE);
         }
 
         $attributes['from'] = $this->ParseVars($attributes['from']);
