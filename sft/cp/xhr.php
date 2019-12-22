@@ -557,7 +557,7 @@ function _xNetworkSync()
 
     if( empty($site) )
     {
-        return JSON::Warning(array('response' => 'Site no longer exists in the database'));
+        JSON::Warning(array('response' => 'Site no longer exists in the database'));
     }
 
 
@@ -565,7 +565,7 @@ function _xNetworkSync()
     $nr = new NetworkRequest($site, NETWORK_FNC_SYNC, array('sync' => $settings));
     if( ($response = $nr->Execute()) === false )
     {
-        return JSON::Warning(array('response' => $nr->error));
+        JSON::Warning(array('response' => $nr->error));
     }
 
     JSON::Success();
@@ -616,7 +616,7 @@ function _xNetworkSiteDelete()
 
     if( empty($site) )
     {
-        return JSON::Warning(array('response' => 'Site no longer exists in the database'));
+        JSON::Warning(array('response' => 'Site no longer exists in the database'));
     }
 
 
@@ -624,7 +624,7 @@ function _xNetworkSiteDelete()
     $nr = new NetworkRequest($site, NETWORK_FNC_SYNC, array('sync' => $settings));
     if( ($response = $nr->Execute()) === false )
     {
-        return JSON::Warning(array('response' => $nr->error));
+        JSON::Warning(array('response' => $nr->error));
     }
 
     JSON::Success();
@@ -674,7 +674,7 @@ function _xNetworkStatsGet()
     if( empty($site) )
     {
         network_stats_cache_remove($_REQUEST['domain']);
-        return JSON::Warning(array('response' => 'Site no longer exists in the database'));
+        JSON::Warning(array('response' => 'Site no longer exists in the database'));
     }
 
     // Get stats for a network site
@@ -682,7 +682,7 @@ function _xNetworkStatsGet()
     if( ($response = $nr->Execute()) === false )
     {
         network_stats_cache_remove($_REQUEST['domain']);
-        return JSON::Warning(array('response' => $nr->error));
+        JSON::Warning(array('response' => $nr->error));
     }
 
     network_stats_cache_update($site, $response);
@@ -707,7 +707,7 @@ function _xNetworkSitesAdd()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Network site could not be added; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Network site could not be added; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -760,7 +760,7 @@ function _xNetworkSitesEdit()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Network site could not be updated; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Network site could not be updated; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -810,7 +810,7 @@ function _xNetworkSitesBulkEdit()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Network sites could not be updated; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Network sites could not be updated; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -908,7 +908,7 @@ function _xSystemTradesEdit()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'System trade could not be edited; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'System trade could not be edited; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -991,7 +991,7 @@ function _xTradesBulkAdd()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Trades could not be added; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Trades could not be added; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -1115,7 +1115,7 @@ function _xTradesAdd()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Trade could not be added; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Trade could not be added; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -1180,7 +1180,7 @@ function _xTradesEdit()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Trade could not be edited; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Trade could not be edited; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -1242,7 +1242,7 @@ function _xTradesBulkEditShow()
 
     if( empty($_REQUEST['domain']) )
     {
-        return JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
+        JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
     }
 
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-bulk-edit.php', $_REQUEST)));
@@ -1309,7 +1309,7 @@ function _xTradesEnable()
 
     if( empty($_REQUEST['domain']) )
     {
-        return JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
+        JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
     }
 
     $now = time();
@@ -1339,7 +1339,7 @@ function _xTradesDisable()
 
     if( empty($_REQUEST['domain']) )
     {
-        return JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
+        JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
     }
 
     require_once 'dirdb.php';
@@ -1367,7 +1367,7 @@ function _xTradesEmailShow()
 
     if( empty($_REQUEST['domain']) )
     {
-        return JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
+        JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
     }
 
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-email.php')));
@@ -1388,7 +1388,7 @@ function _xTradesEmail()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'E-mail could not be sent; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'E-mail could not be sent; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -1426,7 +1426,7 @@ function _xTradesDeleteShow()
 
     if( empty($_REQUEST['domain']) )
     {
-        return JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
+        JSON::Warning(array(JSON_KEY_DIALOG_CLOSE => true, JSON_KEY_MESSAGE => 'No valid trades were selected'));
     }
 
     JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('trades-delete.php')));
@@ -1591,7 +1591,7 @@ function _xGlobalSettingsSave()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Settings could not be saved; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Settings could not be saved; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -1628,7 +1628,7 @@ function _xSkimSchemesAdd()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Skim scheme could not be added; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Skim scheme could not be added; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -1769,7 +1769,7 @@ function _xToplistsAdd()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Toplist could not be added; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Toplist could not be added; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -1828,7 +1828,7 @@ function _xToplistsEdit()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Toplist could not be updated; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Toplist could not be updated; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -1946,7 +1946,7 @@ function _xTemplatesRecompileAll()
 {
     if( ($result = recompile_templates()) !== true )
     {
-        return JSON::Warning($result);
+        JSON::Warning($result);
     }
 
     JSON::Success('All templates have been recompiled!');
@@ -1975,7 +1975,7 @@ function _xEmailTemplatesSave()
 
     if( !is_writable($template) )
     {
-        return JSON::Warning('Template file has incorrect permissions; change to 666 then try again');
+        JSON::Warning('Template file has incorrect permissions; change to 666 then try again');
     }
 
     require_once 'compiler.php';
@@ -1985,7 +1985,7 @@ function _xEmailTemplatesSave()
 
     if( ($code = $compiler->Compile($template_code)) === false )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Template contains errors',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Template contains errors',
                                    JSON_KEY_WARNINGS => $compiler->GetErrors()));
     }
 
@@ -2027,7 +2027,7 @@ function _xEmailTemplatesReplace()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Search and replace could not be executed; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Search and replace could not be executed; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -2075,7 +2075,7 @@ function _xEmailSignatureSave()
 
     if( !is_writable($greeting_template) || !is_writable($signature_template) )
     {
-        return JSON::Warning('Both the email-global-greeting.tpl and email-global-signature.tpl files must have 666 permissions.  Please change the permissions on these files, and then try saving again.');
+        JSON::Warning('Both the email-global-greeting.tpl and email-global-signature.tpl files must have 666 permissions.  Please change the permissions on these files, and then try saving again.');
     }
 
     require_once 'compiler.php';
@@ -2110,14 +2110,14 @@ function _xSiteTemplatesSave()
 
     if( !is_writeable($template) )
     {
-        return JSON::Warning('Template file has incorrect permissions; change to 666 then try again');
+        JSON::Warning('Template file has incorrect permissions; change to 666 then try again');
     }
 
     require_once 'compiler.php';
 
     if( ($code = $compiler->Compile($_REQUEST['template_code'])) === false )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Template contains errors',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Template contains errors',
                                    JSON_KEY_WARNINGS => $compiler->GetErrors()));
     }
 
@@ -2157,7 +2157,7 @@ function _xSiteTemplatesReplace()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Search and replace could not be executed; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Search and replace could not be executed; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -2201,7 +2201,7 @@ function _xGroupsSave()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Groups could not be updated; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Groups could not be updated; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -2226,7 +2226,7 @@ function _xCategoriesSave()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Categories could not be updated; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Categories could not be updated; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -2254,7 +2254,7 @@ function _xCountriesSave()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Country settings could not be updated; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Country settings could not be updated; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -2302,7 +2302,7 @@ function _xBlacklistSave()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Blacklist could not be updated; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Blacklist could not be updated; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -2331,7 +2331,7 @@ function _xSearchEnginesSave()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Search engines could not be updated; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Search engines could not be updated; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -2378,7 +2378,7 @@ function _xTradeRulesSave()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Trade rules could not be updated; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Trade rules could not be updated; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -2409,7 +2409,7 @@ function _xChangeLogin()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Login information could not be updated; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Login information could not be updated; please fix the following items',
                                    JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -2449,7 +2449,7 @@ function _xOutListSettingsSave()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Outlist settings could not be updated; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Outlist settings could not be updated; please fix the following items',
             JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
@@ -2493,7 +2493,7 @@ function _xSpidersSave()
 
     if( !$v->Validate() )
     {
-        return JSON::Warning(array(JSON_KEY_MESSAGE => 'Spiders could not be updated; please fix the following items',
+        JSON::Warning(array(JSON_KEY_MESSAGE => 'Spiders could not be updated; please fix the following items',
             JSON_KEY_WARNINGS => $v->GetErrors()));
     }
 
