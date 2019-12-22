@@ -1423,7 +1423,7 @@ function build_toplist($toplist)
     {
         if( !is_file($toplist['infile']) || !is_readable($toplist['infile']) )
         {
-            return log_toplist_error("Input file '{$toplist['infile']}' does not exist or is not readable");
+            log_toplist_error("Input file '{$toplist['infile']}' does not exist or is not readable");
         }
 
         $toplist['template'] = file_get_contents($toplist['infile']);
@@ -1436,19 +1436,19 @@ function build_toplist($toplist)
 
         if( !is_dir($directory) || !is_writeable($directory) )
         {
-            return log_toplist_error("Output directory '$directory' does not exist or is not writeable");
+            log_toplist_error("Output directory '$directory' does not exist or is not writeable");
         }
     }
     else if( !is_writeable($toplist['outfile']) )
     {
-        return log_toplist_error("Output file '{$toplist['outfile']}' is not writeable");
+        log_toplist_error("Output file '{$toplist['outfile']}' is not writeable");
     }
 
 
     // Compile and check for errors
     if( ($compiled = $compiler->Compile($toplist['template'])) === false )
     {
-        return log_toplist_error("Toplist template for '{$toplist['outfile']}' contains errors");
+        log_toplist_error("Toplist template for '{$toplist['outfile']}' contains errors");
     }
 
 

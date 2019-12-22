@@ -70,7 +70,7 @@ function _xStatsShow()
     if( !$v->Validate() )
     {
         $t->Assign('g_errors', $v->GetErrors());
-        return _xStatsLoginShow();
+        _xStatsLoginShow();
     }
 
     require_once 'lib/stats.php';
@@ -119,7 +119,7 @@ function _xForgotPasswordConfirm()
     if( !$v->Validate() )
     {
         $t->Assign('g_errors', $v->GetErrors());
-        return _xForgotPasswordShow();
+        _xForgotPasswordShow();
     }
 
     require_once 'textdb.php';

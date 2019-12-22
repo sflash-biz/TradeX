@@ -1299,7 +1299,7 @@ class PHPMailer {
         if (!preg_match('/^[A-z][A-z]*:\/\//',$url)) {
           $filename = basename($url);
           $directory = dirname($url);
-          ($directory == '.')?$directory='':'';
+          if ($directory == '.') $directory='';
           $cid = 'cid:' . md5($filename);
           $fileParts = explode("\.", $filename);
           $ext = $fileParts[1];

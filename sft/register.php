@@ -143,7 +143,7 @@ function _xRegister()
     if( !$v->Validate() )
     {
         $t->Assign('g_errors', $v->GetErrors());
-        return _xRegisterShow();
+        _xRegisterShow();
     }
 
     $_REQUEST = array_merge($_REQUEST, unserialize(file_get_contents(FILE_NEW_TRADE_DEFAULTS)));
