@@ -1,8 +1,8 @@
 <?php
 
 // Version information
-define('RELEASED', '2018-03-16');
-define('VERSION', '1.0.4.20180316');
+define('RELEASED', '2019-12-22');
+define('VERSION', '2.1.0.20191222');
 define('TIMESTAMP', 1521230354);
 // /Version information
 //define('RELEASED', date('Y-m-d'));
