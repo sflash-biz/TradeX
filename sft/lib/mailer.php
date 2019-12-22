@@ -1073,7 +1073,7 @@ class PHPMailer {
     $eol = "\r\n";
     $escape = '=';
     $output = '';
-    while( list(, $line) = each($lines) ) {
+    while( $line = current($lines) ) {
       $linlen = strlen($line);
       $newline = '';
       for($i = 0; $i < $linlen; $i++) {
@@ -1963,7 +1963,7 @@ class SMTP
 
     $max_line_length = 998; # used below; set here for ease in change
 
-    while(list(,$line) = @each($lines)) {
+    while( $line = @current($lines) ) {
       $lines_out = null;
       if($line == "" && $in_headers) {
         $in_headers = false;
@@ -1990,7 +1990,7 @@ class SMTP
       $lines_out[] = $line;
 
       # now send the lines to the server
-      while(list(,$line_out) = @each($lines_out)) {
+      while( $line_out = @current($lines_out) ) {
         if(strlen($line_out) > 0)
         {
           if(substr($line_out, 0, 1) == ".") {
@@ -2058,7 +2058,7 @@ class SMTP
 
     # parse the reply and place in our array to return to user
     $entries = explode($this->CRLF,$rply);
-    while(list(,$l) = @each($entries)) {
+    while( $l = @current($entries) ) {
       $list[] = substr($l,4);
     }
 
