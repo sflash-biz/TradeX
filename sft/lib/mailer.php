@@ -266,9 +266,9 @@ class PHPMailer {
       case 'smtp':
         $result = $this->SmtpSend($header, $body);
         break;
-      case 'mail':
+/*      case 'mail':
         $result = $this->MailSend($header, $body);
-        break;
+        break;*/
       default:
         $result = $this->MailSend($header, $body);
         break;
