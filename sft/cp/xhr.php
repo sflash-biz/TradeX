@@ -364,11 +364,6 @@ function _xUpdateExtractInstaller()
     file_append(FILE_LOG_UPDATE, $result ? "\tUpdate out.php " . '(/*#<OUTLIST_POINTS>*/)' . " - [Done]\n" : "\t[Error]: cant update in.php " . '(/*#<OUTLIST_POINTS>*/)' . "\n");
 
 
-
-    _xPatch();
-    file_append(FILE_LOG_UPDATE, "\t_xPatch() - [Done]\n");
-
-
     JSON::Success();
     return '';
 }
@@ -393,6 +388,7 @@ function _xPatch()
         }
     }
 
+    file_append(FILE_LOG_UPDATE, "\t_xPatch() - [Done]\n");
     JSON::Success();
     return '';
 }
