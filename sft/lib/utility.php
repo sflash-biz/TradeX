@@ -114,7 +114,6 @@ define('RECORD_SIZE_STATS', STATS_PER_RECORD * 4);
 
 
 // Misc
-//define('URL_DOWNLOAD', 'http://precise64/sft-dist/download-sft.php');
 define('URL_DOWNLOAD', 'http://sflash.biz/sft-dist-pub/download-sft.php');
 define('TOPLIST_SOURCE_FILE', 'File');
 define('TOPLIST_SOURCE_TEMPLATE', 'Template');
