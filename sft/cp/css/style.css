@@ -557,9 +557,9 @@ a.trade-link-hourly {
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  box-shadow: 0 10px rgba(0,0,0,0.6);
-  -moz-box-shadow: 0 10px rgba(0,0,0,0.6);
-  -webkit-box-shadow: 0 10px rgba(0,0,0,0.6);
+  box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.2);
 }
 
 #dialog-content {
@@ -908,9 +908,9 @@ div.icon-menu > div.icon-menu-overflow > p.message-warning {
   color: #000;
   background: transparent url(../images/toolbar-background-1x32.png) repeat-x 50% 50%;
   position: relative;
-  box-shadow: 0 6px rgba(0,0,0,0.6);
-  -moz-box-shadow: 0 6px rgba(0,0,0,0.6);
-  -webkit-box-shadow: 0 6px rgba(0,0,0,0.6);
+  box-shadow: 0 2px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0 2px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0 2px rgba(0,0,0,0.2);
 }
 
 #menu-bar img[src="images/refresh-32x32.png"], #menu-bar img[src="images/stats-32x32.png"] {
