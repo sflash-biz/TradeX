@@ -1413,10 +1413,15 @@ table.item-table tbody td:first-child input[type="checkbox"],
 table.item-table thead th:first-child input[type="checkbox"] {
   display: block;
   width: 100%;
-  height: 24px;
+  /*  height: 24px; */
   margin: 0;
   padding: 0;
   outline: none;
+  transform: scale(1.7);
+}
+
+input[type="checkbox"].check-all {
+  margin: 0 0 4px 0 !important;
 }
 
 table.item-table tbody td:first-child {
