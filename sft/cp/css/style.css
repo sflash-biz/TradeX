@@ -220,9 +220,9 @@ div.percent-bar > span {
   right: 0;
   top: -55px;
   border-width: 2px;
-  box-shadow: 0 6px rgba(0,0,0,0.6);
-  -moz-box-shadow: 0 6px rgba(0,0,0,0.6);
-  -webkit-box-shadow: 0 6px rgba(0,0,0,0.6);
+  box-shadow: 0 0 6px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0 0 6px rgba(0,0,0,0.6);
+  -webkit-box-shadow: 0 0 6px rgba(0,0,0,0.6);
   border-radius: 5px;
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
@@ -349,8 +349,8 @@ div.trade-info {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   box-shadow: 0 0 10px rgba(0,0,0,0.6);
-  -moz-box-shadow: 0 10px rgba(0,0,0,0.6);
-  -webkit-box-shadow: 0 10px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0 0 10px rgba(0,0,0,0.6);
+  -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.6);
 }
 
 div.trade-info > b {
@@ -431,9 +431,9 @@ a.trade-link-hourly {
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  box-shadow: 0 10px rgba(0,0,0,0.6);
-  -moz-box-shadow: 0 10px rgba(0,0,0,0.6);
-  -webkit-box-shadow: 0 10px rgba(0,0,0,0.6);
+  box-shadow: 0 0 10px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0 0 10px rgba(0,0,0,0.6);
+  -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.6);
 }
 
 #cal select {
@@ -738,9 +738,9 @@ div.quality-normal {
   border-radius: 8px;
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
-  box-shadow: 0 6px rgba(0,0,0,0.6);
-  -moz-box-shadow: 0 6px rgba(0,0,0,0.6);
-  -webkit-box-shadow: 0 6px rgba(0,0,0,0.6);
+  box-shadow: 0 0 6px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0 0 6px rgba(0,0,0,0.6);
+  -webkit-box-shadow: 0 0 6px rgba(0,0,0,0.6);
 }
 
 #growl-container > div > div.message {
@@ -887,9 +887,9 @@ div.icon-menu > div.icon-menu-overflow > p.message-warning {
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  box-shadow: 0 6px rgba(0,0,0,0.6);
-  -moz-box-shadow: 0 6px rgba(0,0,0,0.6);
-  -webkit-box-shadow: 0 6px rgba(0,0,0,0.6);
+  box-shadow: 0 0 6px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0 0 6px rgba(0,0,0,0.6);
+  -webkit-box-shadow: 0 0 6px rgba(0,0,0,0.6);
 }
 
 #menu-bar {
@@ -908,9 +908,9 @@ div.icon-menu > div.icon-menu-overflow > p.message-warning {
   color: #000;
   background: transparent url(../images/toolbar-background-1x32.png) repeat-x 50% 50%;
   position: relative;
-  box-shadow: 0 2px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0 2px rgba(0,0,0,0.2);
-  -webkit-box-shadow: 0 2px rgba(0,0,0,0.2);
+  box-shadow: 0 0 6px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0 0 6px rgba(0,0,0,0.6);
+  -webkit-box-shadow: 0 0 6px rgba(0,0,0,0.6);
 }
 
 #menu-bar img[src="images/refresh-32x32.png"], #menu-bar img[src="images/stats-32x32.png"] {
@@ -1172,9 +1172,9 @@ textarea.tinymce {
   background-color: #f4f4f4;
   padding: 5px 0 4px 0;
   position: relative;
-  box-shadow: 0 8px rgba(0,0,0,0.6);
-  -webkit-box-shadow: 0 8px rgba(0,0,0,0.6);
-  -moz-box-shadow: 0 8px rgba(0,0,0,0.6);
+  box-shadow: 0 0 8px rgba(0,0,0,0.6);
+  -webkit-box-shadow: 0 0 8px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0 0 8px rgba(0,0,0,0.6);
   opacity: 0.7;
 }
 
