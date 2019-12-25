@@ -17,7 +17,7 @@ define('FILE_CP_USER', DIR_DATA . '/cp_user');
 define('CP_USERNAME_FIELD', 'cp_username');
 define('CP_PASSWORD_FIELD', 'cp_password');
 define('CP_SESSION_FIELD', 'cp_session');
-define('CP_COOKIE_NAME', 'txcp');
+define('CP_COOKIE_NAME', 'sftcp');
 define('CP_COOKIE_PATH', preg_replace('~/cp/.*~', '/cp/', $_SERVER['REQUEST_URI']));
 $parsed_url = parse_url($_SERVER['HTTP_HOST']);
 define('CP_COOKIE_DOMAIN', $parsed_url['host']);
