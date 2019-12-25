@@ -12,6 +12,7 @@ define('DIR_CP_SESSION', DIR_DATA . '/cp_sessions');
 
 // Files
 define('FILE_CP_USER', DIR_DATA . '/cp_user');
+define('FILE_CP_LOCK', DIR_DATA . '/cp_sessions/cp_login_lock');
 
 // Misc defines
 define('CP_USERNAME_FIELD', 'cp_username');
@@ -22,6 +23,7 @@ define('CP_COOKIE_PATH', preg_replace('~/cp/.*~', '/cp/', $_SERVER['REQUEST_URI'
 $parsed_url = parse_url($_SERVER['HTTP_HOST']);
 define('CP_COOKIE_DOMAIN', $parsed_url['host']);
 define('CP_SESSION_DURATION', 7776000);
+define('CP_LOGINS_INTERVAL', 10);
 
 
 // Setup include path
@@ -47,42 +49,33 @@ function cp_authenticate($session = true)
             return 'The password field was left blank';
         }
 
+        if (cp_login_locked(CP_LOGINS_INTERVAL)) return "Not so fast. Do not try login so often.";
+
         list($username, $password, $allowed_ips) = explode('|', file_first_line(FILE_CP_USER));
 
         if( $username == $_REQUEST[CP_USERNAME_FIELD]
             && $password == sha1($_REQUEST[CP_PASSWORD_FIELD])
             && array_has_substr(ips_to_array($allowed_ips), $_SERVER['REMOTE_ADDR'])
+            && !cp_login_locked(CP_LOGINS_INTERVAL)
         )
         {
             if( $session )
             {
                 delete_old_cp_sessions();
+                cp_login_lock_delete();
                 cp_session_create($username);
             }
 
             return true;
         }
 
+        cp_login_lock_create();
         return "The supplied username/password combination is not valid or your IP: <string style=\"color: brown;\">{$_SERVER['REMOTE_ADDR']}</string> is not valid for this user";
     }
     else if( isset($_COOKIE[CP_COOKIE_NAME]) )
     {
         return cp_session_authenticate($_COOKIE[CP_COOKIE_NAME]);
     }
-}
-
-function ips_to_array($ips)
-{
-    $ips = preg_replace('~\s~', '', $ips);
-    return explode(',', $ips);
-}
-
-function array_has_substr($substr_arr, $str)
-{
-    foreach ($substr_arr as $val) {
-        if (strpos($str, $val) !== false) return true;
-    }
-    return false;
 }
 
 function cp_session_authenticate($cookie)
@@ -108,6 +101,48 @@ function cp_session_authenticate($cookie)
         cp_logout();
         return 'Your control panel session has expired';
     }
+}
+
+function ips_to_array($ips)
+{
+    $ips = preg_replace('~\s~', '', $ips);
+    return explode(',', $ips);
+}
+
+function array_has_substr($substr_arr, $str)
+{
+    foreach ($substr_arr as $val) {
+        if (strpos($str, $val) !== false) return true;
+    }
+    return false;
+}
+
+function cp_login_lock_create()
+{
+    $filename = FILE_CP_LOCK;
+    file_write($filename, time());
+}
+
+function cp_login_lock_delete()
+{
+    $filename = FILE_CP_LOCK;
+    if (file_exists($filename)) unlink($filename);
+}
+
+
+function cp_login_locked($lock_sec = 10)
+{
+    $filename = FILE_CP_LOCK;
+
+    if (file_exists($filename)) {
+        if (filemtime($filename) + $lock_sec - time() >= 0) {
+            return true;
+        } else {
+            cp_login_lock_delete();
+        }
+    }
+
+    return false;
 }
 
 function cp_session_create($username)
