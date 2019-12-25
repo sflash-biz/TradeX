@@ -1,7 +1,5 @@
 <?php
 
-
-
 define('XHR', true);
 
 require_once 'includes/functions.php';
@@ -220,6 +218,7 @@ function _xUpdateExtractInstaller()
     file_append(FILE_LOG_UPDATE, "[" . date('r') . "] Update started...\n");
 
     $fp = fopen($installer_file, 'r');
+
     while( !feof($fp) )
     {
         list($type, $name, $permissions, $su_permissions, $on_install, $on_patch, $chunk, $b64contents) = explode('|', trim(fgets($fp)));
@@ -285,6 +284,7 @@ function _xUpdateExtractInstaller()
                 break;
         }
     }
+
     fclose($fp);
 
     file_delete($installer_file);
@@ -364,13 +364,17 @@ function _xUpdateExtractInstaller()
     file_append(FILE_LOG_UPDATE, $result ? "\tUpdate out.php " . '(/*#<OUTLIST_POINTS>*/)' . " - [Done]\n" : "\t[Error]: cant update in.php " . '(/*#<OUTLIST_POINTS>*/)' . "\n");
 
 
+
+    //_xPatch();    Strange old solution
+    //file_append(FILE_LOG_UPDATE, "\t_xPatch() - [Done]\n");
+
+
     JSON::Success();
     return '';
 }
 
 function _xPatch()
 {
-
     global $C;
 
     require_once 'dirdb.php';
@@ -2458,7 +2462,11 @@ function _xTradeRulesSave()
 
 function _xChangeLoginShow()
 {
-    JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('change-login.php')));
+    list($username, $password, $allowed_ips) = explode('|', file_first_line(FILE_CP_USER));
+
+    $data = $allowed_ips;
+
+    JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('change-login.php', $data)));
     return '';
 }
 
@@ -2481,7 +2489,7 @@ function _xChangeLogin()
         return '';
     }
 
-    file_write(FILE_CP_USER, $_REQUEST['username'] . '|' . sha1($_REQUEST['password']));
+    file_write(FILE_CP_USER, $_REQUEST['username'] . '|' . sha1($_REQUEST['password']) . '|' . preg_replace('~[^0-9\.,]~', '', $_REQUEST['allowed_ips']));
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Control panel login has been successfully updated',
         JSON_KEY_DIALOG => _xIncludeCapture('change-login.php')));

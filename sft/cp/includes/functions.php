@@ -47,9 +47,12 @@ function cp_authenticate($session = true)
             return 'The password field was left blank';
         }
 
-        list($username, $password) = explode('|', file_first_line(FILE_CP_USER));
+        list($username, $password, $allowed_ips) = explode('|', file_first_line(FILE_CP_USER));
 
-        if( $username == $_REQUEST[CP_USERNAME_FIELD] && $password == sha1($_REQUEST[CP_PASSWORD_FIELD]) )
+        if( $username == $_REQUEST[CP_USERNAME_FIELD]
+            && $password == sha1($_REQUEST[CP_PASSWORD_FIELD])
+            && array_has_substr(ips_to_array($allowed_ips), $_SERVER['REMOTE_ADDR'])
+        )
         {
             if( $session )
             {
@@ -60,14 +63,26 @@ function cp_authenticate($session = true)
             return true;
         }
 
-        return 'The supplied username/password combination is not valid';
+        return "The supplied username/password combination is not valid or your IP: <string style=\"color: brown;\">{$_SERVER['REMOTE_ADDR']}</string> is not valid for this user";
     }
     else if( isset($_COOKIE[CP_COOKIE_NAME]) )
     {
         return cp_session_authenticate($_COOKIE[CP_COOKIE_NAME]);
     }
+}
 
-    return 'Something wrong: cp_authenticate';
+function ips_to_array($ips)
+{
+    $ips = preg_replace('~\s~', '', $ips);
+    return explode(',', $ips);
+}
+
+function array_has_substr($substr_arr, $str)
+{
+    foreach ($substr_arr as $val) {
+        if (strpos($str, $val) !== false) return true;
+    }
+    return false;
 }
 
 function cp_session_authenticate($cookie)
@@ -105,10 +120,10 @@ function cp_session_create($username)
     file_write($filename, "$username|$session|" . time() . "|" . sha1($_SERVER['HTTP_USER_AGENT']) . "|{$_SERVER['REMOTE_ADDR']}");
 
     setcookie(CP_COOKIE_NAME,
-              CP_USERNAME_FIELD . '=' . urlencode($username) . '&' . CP_SESSION_FIELD . '=' . urlencode($session),
-              0,
-              CP_COOKIE_PATH,
-              CP_COOKIE_DOMAIN);
+        CP_USERNAME_FIELD . '=' . urlencode($username) . '&' . CP_SESSION_FIELD . '=' . urlencode($session),
+        0,
+        CP_COOKIE_PATH,
+        CP_COOKIE_DOMAIN);
 }
 
 function cp_logout()
@@ -191,46 +206,46 @@ function write_config($settings)
 
 
     $in_settings = "\$C = array(\n" .
-                   "'domain' => '{$C['domain']}',\n" .
-                   "'keyphrase' => '{$C['keyphrase']}',\n" .
-                   "'flag_filter_no_image' => '{$C['flag_filter_no_image']}',\n".
-                   "'cookie_tdxsess' => '{$C['cookie_tdxsess']}',\n".
-                   "'cookie_tdxsig' => '{$C['cookie_tdxsig']}',\n".
-                   "'cookie_tdxbookmark' => '{$C['cookie_tdxbookmark']}',\n".
-                   "'storage_method' => '{$C['storage_method']}',";
+        "'domain' => '{$C['domain']}',\n" .
+        "'keyphrase' => '{$C['keyphrase']}',\n" .
+        "'flag_filter_no_image' => '{$C['flag_filter_no_image']}',\n".
+        "'cookie_tdxsess' => '{$C['cookie_tdxsess']}',\n".
+        "'cookie_tdxsig' => '{$C['cookie_tdxsig']}',\n".
+        "'cookie_tdxbookmark' => '{$C['cookie_tdxbookmark']}',\n".
+        "'storage_method' => '{$C['storage_method']}',";
     if ($C['storage_method'] == 'Redis') $in_settings .= "\n'redis_host' => '{$C['redis_host']}',\n".
-                    "'redis_port' => '{$C['redis_port']}'";
+        "'redis_port' => '{$C['redis_port']}'";
     $in_settings .= ');';
 
     //$root_dir = DIR_SITE_ROOT;
     $out_settings = "\$C = array(\n" .
-                    "'domain' => '{$C['domain']}',\n" .
-                    "'dir_base' => '" . DIR_BASE . "',\n" .
-                    "'keyphrase' => '{$C['keyphrase']}',\n" .
-                    "'distrib_forces' => '{$C['distrib_forces']}',\n" .
-                    "'distrib_main' => '{$C['distrib_main']}',\n" .
-                    "'distrib_primary' => '{$C['distrib_primary']}',\n" .
-                    "'distrib_secondary' => '{$C['distrib_secondary']}',\n" .
-                    "'count_clicks' => '{$C['count_clicks']}',\n" .
-                    "'fast_click' => '{$C['fast_click']}',\n" .
-                    "'trades_satisfied_url' => '{$C['trades_satisfied_url']}',\n" .
-                    "'flag_filter_no_image' => '{$C['flag_filter_no_image']}',\n".
-                    "'cookie_tdxsess' => '{$C['cookie_tdxsess']}',\n".
-                    "'cookie_tdxsig' => '{$C['cookie_tdxsig']}',\n".
-                    "'storage_method' => '{$C['storage_method']}',";
+        "'domain' => '{$C['domain']}',\n" .
+        "'dir_base' => '" . DIR_BASE . "',\n" .
+        "'keyphrase' => '{$C['keyphrase']}',\n" .
+        "'distrib_forces' => '{$C['distrib_forces']}',\n" .
+        "'distrib_main' => '{$C['distrib_main']}',\n" .
+        "'distrib_primary' => '{$C['distrib_primary']}',\n" .
+        "'distrib_secondary' => '{$C['distrib_secondary']}',\n" .
+        "'count_clicks' => '{$C['count_clicks']}',\n" .
+        "'fast_click' => '{$C['fast_click']}',\n" .
+        "'trades_satisfied_url' => '{$C['trades_satisfied_url']}',\n" .
+        "'flag_filter_no_image' => '{$C['flag_filter_no_image']}',\n".
+        "'cookie_tdxsess' => '{$C['cookie_tdxsess']}',\n".
+        "'cookie_tdxsig' => '{$C['cookie_tdxsig']}',\n".
+        "'storage_method' => '{$C['storage_method']}',";
     if ($C['storage_method'] == 'Redis') $out_settings .= "\n'redis_host' => '{$C['redis_host']}',\n".
-                    "'redis_port' => '{$C['redis_port']}'";
+        "'redis_port' => '{$C['redis_port']}'";
     $out_settings .= ');';
 
     $img_settings = "\$C = array(\n" .
-                    "'dir_base' => '" . DIR_BASE . "',\n" .
-                    "'domain' => '{$C['domain']}',\n" .
-                    "'keyphrase' => '{$C['keyphrase']}',\n" .
-                    "'cookie_tdxsess' => '{$C['cookie_tdxsess']}',\n".
-                    "'cookie_tdxsig' => '{$C['cookie_tdxsig']}',\n".
-                    "'storage_method' => '{$C['storage_method']}',";
+        "'dir_base' => '" . DIR_BASE . "',\n" .
+        "'domain' => '{$C['domain']}',\n" .
+        "'keyphrase' => '{$C['keyphrase']}',\n" .
+        "'cookie_tdxsess' => '{$C['cookie_tdxsess']}',\n".
+        "'cookie_tdxsig' => '{$C['cookie_tdxsig']}',\n".
+        "'storage_method' => '{$C['storage_method']}',";
     if ($C['storage_method'] == 'Redis') $img_settings .= "\n'redis_host' => '{$C['redis_host']}',\n".
-                    "'redis_port' => '{$C['redis_port']}'";
+        "'redis_port' => '{$C['redis_port']}'";
     $img_settings .= ');';
 
 
@@ -268,8 +283,8 @@ function load_countries()
     $weights = explode('|', trim(fread($fp, RECORD_SIZE_COUNTRY_WEIGHT)));
 
     $countries = array(0 => array(),
-                       1 => array(),
-                       2 => array());
+        1 => array(),
+        2 => array());
 
     asort($geoip_country_codes);
     foreach( $geoip_country_codes as $i => $code )
@@ -282,8 +297,8 @@ function load_countries()
         fseek($fp, RECORD_SIZE_COUNTRY_WEIGHT + $i * RECORD_SIZE_COUNTRY);
         $quality = fread($fp, RECORD_SIZE_COUNTRY);
         $countries[$quality][]
-          = array($code,
-                  $geoip_country_names[$i]);
+            = array($code,
+            $geoip_country_names[$i]);
     }
     fclose($fp);
 
@@ -304,7 +319,7 @@ function recompile_templates()
         if( ($code = $compiler->CompileFile($file, DIR_TEMPLATES)) === false )
         {
             return array(JSON_KEY_MESSAGE => 'Template ' . $file . ' contains errors',
-                         JSON_KEY_WARNINGS => $compiler->GetErrors());
+                JSON_KEY_WARNINGS => $compiler->GetErrors());
         }
 
         file_write($compiled, $code);
@@ -421,9 +436,4 @@ function shell_exec_error_handler($errno, $errstr)
 
     $GLOBALS['shell_exec_errors'][] = $errstr;
 }
-
-
-
-
-
 
