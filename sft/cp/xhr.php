@@ -2462,11 +2462,14 @@ function _xTradeRulesSave()
 
 function _xChangeLoginShow()
 {
-    list($username, $password, $allowed_ips) = explode('|', file_first_line(FILE_CP_USER));
+    list($username, $password, $allowed_ips, $network_pass) = explode('|', file_first_line(FILE_CP_USER));
 
-    $data = $allowed_ips;
+    $vars = array(
+        'allowed_ips' => $allowed_ips,
+        'network_pass' => $network_pass
+    );
 
-    JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('change-login.php', $data)));
+    JSON::Success(array(JSON_KEY_DIALOG => _xIncludeCapture('change-login.php', '', $vars)));
     return '';
 }
 
@@ -2489,10 +2492,18 @@ function _xChangeLogin()
         return '';
     }
 
-    file_write(FILE_CP_USER, $_REQUEST['username'] . '|' . sha1($_REQUEST['password']) . '|' . preg_replace('~[^0-9\.,]~', '', $_REQUEST['allowed_ips']));
+    $allowed_ips = preg_replace('~[^0-9\.,]~', '', $_REQUEST['allowed_ips']);
+    $network_pass = preg_replace('~[\|\s]~', '', $_REQUEST['network_pass']);
+
+    file_write(FILE_CP_USER, $_REQUEST['username'] . '|' . sha1($_REQUEST['password']) . '|' . $allowed_ips . '|' . $network_pass);
+
+    $vars = array(
+        'allowed_ips' => $allowed_ips,
+        'network_pass' => $network_pass
+    );
 
     JSON::Success(array(JSON_KEY_MESSAGE => 'Control panel login has been successfully updated',
-        JSON_KEY_DIALOG => _xIncludeCapture('change-login.php')));
+        JSON_KEY_DIALOG => _xIncludeCapture('change-login.php', '', $vars)));
     return '';
 }
 

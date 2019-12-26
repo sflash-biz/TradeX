@@ -6,7 +6,7 @@ require_once 'network-util.php';
 headers_no_cache();
 prepare_request();
 
-if( ($auth_error = cp_authenticate(false)) === true )
+if( ($auth_error = cp_authenticate_network()) === true )
 {
     cp_exec($_REQUEST['r'], NETWORK_FNC_GET_STATS);
 }

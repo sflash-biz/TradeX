@@ -17,6 +17,7 @@ define('FILE_CP_LOCK', DIR_DATA . '/cp_sessions/cp_login_lock');
 // Misc defines
 define('CP_USERNAME_FIELD', 'cp_username');
 define('CP_PASSWORD_FIELD', 'cp_password');
+define('NET_PASSWORD_FIELD', 'network_pass');
 define('CP_SESSION_FIELD', 'cp_session');
 define('CP_COOKIE_NAME', 'sftcp');
 define('CP_COOKIE_PATH', preg_replace('~/cp/.*~', '/cp/', $_SERVER['REQUEST_URI']));
@@ -32,6 +33,35 @@ set_include_path(join(PATH_SEPARATOR, array(get_include_path(), DIR_CP_INCLUDES)
 
 // Check if it is time for an update
 stats_check_update_time();
+
+
+
+
+function cp_authenticate_network()
+{
+    //return true; // to disable authentication, disable authorisation
+
+    if( string_is_empty($_REQUEST[CP_USERNAME_FIELD]) )
+    {
+        return 'The username field was left blank';
+    }
+
+    if( string_is_empty($_REQUEST[NET_PASSWORD_FIELD]) )
+    {
+        return 'The password field was left blank';
+    }
+
+    list($username, $password, $allowed_ips, $network_pass) = explode('|', file_first_line(FILE_CP_USER));
+
+    if (empty($network_pass)) return sprintf('Network pass for <strong style="color: brown;">%s</strong> is empty. Is no way for net access.', CP_COOKIE_DOMAIN);
+
+    if( $username == $_REQUEST[CP_USERNAME_FIELD] && $network_pass == $_REQUEST[NET_PASSWORD_FIELD] )
+    {
+        return true;
+    }
+
+    return "The supplied username/password combination is not valid";
+}
 
 function cp_authenticate($session = true)
 {
@@ -70,7 +100,7 @@ function cp_authenticate($session = true)
         }
 
         cp_login_lock_create();
-        return "The supplied username/password combination is not valid or your IP: <string style=\"color: brown;\">{$_SERVER['REMOTE_ADDR']}</string> is not valid for this user";
+        return sprintf('The supplied username/password combination is not valid or your IP: <strong style="color: brown;">%s</strong> is not valid for this user', $_SERVER['REMOTE_ADDR']);
     }
     else if( isset($_COOKIE[CP_COOKIE_NAME]) )
     {
@@ -128,7 +158,6 @@ function cp_login_lock_delete()
     $filename = FILE_CP_LOCK;
     if (file_exists($filename)) unlink($filename);
 }
-
 
 function cp_login_locked($lock_sec = 10)
 {

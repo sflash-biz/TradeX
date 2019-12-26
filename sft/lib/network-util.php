@@ -37,7 +37,7 @@ class NetworkRequest
     {
         $this->url = $site['url'] . NETWORK_SCRIPT;
         $this->post_data = array_merge(array('cp_username' => $site['username'],
-                                             'cp_password' => $site['password'],
+                                            'network_pass' => $site['password'],
                                              'r' => $fnc),
                                        $extra_post);
     }

@@ -18,7 +18,7 @@ $(function()
         var pass = $(this).attr('cppass');
 
         $('#form-network-login input[name="cp_username"]').val(user);
-        $('#form-network-login input[name="cp_password"]').val(pass);
+        $('#form-network-login input[name="network_pass"]').val(pass);
         $('#form-network-login').attr('action', url).submit();
 
         return false;

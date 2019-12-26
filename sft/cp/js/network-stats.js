@@ -15,26 +15,6 @@ $(function()
     var $thead = $('#thead-float')
                  .css({/*top: table_pos.top + 'px', */left: table_pos.left + 'px'});
 
-
-    //$($.browser.msie ? window : document)
-    //.scroll(function()
-    //{
-    //    var st = $(this).scrollTop();
-    //
-    //    if( st > table_pos.top )
-    //    {
-    //        $thead
-    //        //.css({top: table_pos.top + st - table_pos.top  + 'px'})
-    //        .show();
-    //    }
-    //    else
-    //    {
-    //        $thead
-    //        .hide();
-    //    }
-    //});
-
-
     $(window)
     .resize(function()
     {
@@ -69,7 +49,7 @@ $(function()
         var pass = $(this).attr('cppass');
 
         $('#form-network-login input[name="cp_username"]').val(user);
-        $('#form-network-login input[name="cp_password"]').val(pass);
+        $('#form-network-login input[name="network_pass"]').val(pass);
         $('#form-network-login').attr('action', url).submit();
 
         return false;
