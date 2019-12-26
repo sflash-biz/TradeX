@@ -9,20 +9,20 @@ if (isset($_REQUEST['delete']) && $_REQUEST['delete'] == 'self')
     if (unlink(__FILE__))
         echo '<br><div style="text-align: center">reset-access.php file was deleted from server</div>';
     else
-		echo '<br><div style="text-align: center; color: red;">Cant delete reset-access.php, try do it manually</div>';
+        echo '<br><div style="text-align: center; color: red;">Cant delete reset-access.php, try do it manually</div>';
 }
 else
 {
     $password = get_random_password();
-    file_write(FILE_CP_USER, 'administrator|' . sha1($password));
+    file_write(FILE_CP_USER, 'admin|' . sha1($password) . '||');
     cp_session_cleanup(true);
 }
 
 if (empty($password)) {
-	if (!empty($_REQUEST['pass']))
-		$password = $_REQUEST['pass'];
-	else
-		$password = '';
+    if (!empty($_REQUEST['pass']))
+        $password = $_REQUEST['pass'];
+    else
+        $password = '';
 }
 
 ?>
