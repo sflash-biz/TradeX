@@ -12,22 +12,31 @@
 
                 <div class="field">
                     <label title="The control panel username you would like to use" class="short">Old Password:</label>
-                    <span><input name="old_password" value="" size="25" type="text"></span>
+                    <span><input name="old_password" value="" size="26" type="text"></span>
                 </div>
 
                 <div class="field">
                     <label title="The control panel username you would like to use" class="short">New Username:</label>
-                    <span><input name="username" value="" size="25" type="text"></span>
+                    <span><input name="username" value="" size="26" type="text"></span>
                 </div>
 
                 <div class="field">
                     <label title="The control panel password you would like to use" class="short">New Password:</label>
-                    <span><input name="password" value="" size="25" type="text"></span>
+                    <span><input name="password" value="" size="26" type="text"></span>
                 </div>
 
                 <div class="field">
-                    <label title="Allowed IPs (ort parts of IPs) list comma separated. Example: 192.168.33.1, 192.168.44., 127.0" class="short" style="opacity: .5;">Allowed IPs:</label>
-                    <span><input name="allowed_ips" value="<?php echo $item; ?>" size="25" type="text"></span>
+                    <label title="Allowed IPs (ort parts of IPs) list comma separated. Example: 192.168.33.1, 192.168.44., 127.0"
+                           class="short" style="opacity: .5;">Allowed IPs:</label>
+                    <span><input name="allowed_ips" value="<?php echo $allowed_ips; ?>" size="26" type="text"></span>
+                    <br>
+                    <div style="text-align: right;opacity: .6;">Your current IP: <strong><?php echo $_SERVER['REMOTE_ADDR']; ?></strong></div>
+                </div>
+
+                <div class="field">
+                    <label title="Network access password. If this field are empty, all network connections are always wrong."
+                           class="short" style="opacity: .5;">Network Pass:</label>
+                    <span><input name="network_pass" value="<?php echo $network_pass; ?>" size="26" type="text"></span>
                 </div>
 
             </div>

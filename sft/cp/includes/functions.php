@@ -85,7 +85,7 @@ function cp_authenticate($session = true)
 
         if( $username == $_REQUEST[CP_USERNAME_FIELD]
             && $password == sha1($_REQUEST[CP_PASSWORD_FIELD])
-            && array_has_substr(ips_to_array($allowed_ips), $_SERVER['REMOTE_ADDR'])
+            && ( empty($allowed_ips) || array_has_substr(ips_to_array($allowed_ips), $_SERVER['REMOTE_ADDR']) )
             && !cp_login_locked(CP_LOGINS_INTERVAL)
         )
         {
