@@ -35,7 +35,7 @@ if (empty($password)) {
       <br><br>
 
       <a href="../cp/index.php" target="_blank">SFTrade Control Panel</a><br>
-      <b>Username:</b> administrator<br>
+      <b>Username:</b> admin<br>
       <b>Password:</b> <input type="text" value="<?php echo $password; ?>" onclick="this.select();" style="border:none; outline: none; vertical-align: baseline;">
 
       <br><br>
