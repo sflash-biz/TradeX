@@ -6,7 +6,8 @@ require_once 'template.php';
 
 
 $functions = array('register' => '_xRegister',
-                   'confirm' => '_xConfirmShow');
+                   'confirm' => '_xConfirmShow',
+                   'register-network' => '_xRegisterNetwork',);
 
 prepare_request();
 
@@ -14,13 +15,14 @@ $t = new Template();
 $t->AssignByRef('g_config', $C);
 $t->AssignByRef('g_request', $_REQUEST);
 
-
 if( !$C['flag_accept_new_trades'] )
 {
-    $t->Display('register-closed.tpl');
-    exit;
+    if (empty($_REQUEST['r']) || $_REQUEST['r'] !== 'NETWORK-KEY')
+    {
+        $t->Display('register-closed.tpl');
+        exit;
+    }
 }
-
 
 $r = $_REQUEST['r'];
 if( isset($functions[$r]) )
@@ -151,11 +153,14 @@ function _xRegister()
 
     $t->AssignByRef('g_trade', $_REQUEST);
 
-    trade_add($_REQUEST, true);
+    if( $v->Validate() )
+    {
+        trade_add($_REQUEST, true);
 
-    $_REQUEST['password'] = $password;
+        $_REQUEST['password'] = $password;
 
-    $t->Display('register-complete.tpl');
+        $t->Display('register-complete.tpl');
+    }
 }
 
 function _xConfirmShow()
@@ -212,3 +217,77 @@ function _xConfirmShow()
     $t->Display('register-confirm.tpl');
 }
 
+function _xRegisterNetwork()
+{
+    header("Access-Control-Allow-Origin: *");
+    header('Content-type: application/json');
+
+    global $t, $C;
+
+    require_once 'validator.php';
+
+    $_REQUEST = string_strip_tags($_REQUEST);
+
+    $v =& Validator::Get();
+
+    if(!empty($C['network_token']) && $_REQUEST['token'] !== $C['network_token']) {
+        echo '{"error": "New trades is not accepted or incorrect network token."}';
+        exit;
+    }
+
+    $v->Register($_REQUEST['return_url'], VT_VALID_HTTP_URL, "URL not valid.");
+
+/*    if( !string_is_empty($_REQUEST['return_url']) )
+    {
+        require_once 'http.php';
+        $http = new HTTP();
+        $v->Register($http->GET($_REQUEST['return_url'], null, true), VT_NOT_FALSE, "URL fail: " . $http->error . ".");
+        $_REQUEST['header'] = $http->response_headers;
+        $_REQUEST['content'] = $http->body;
+    }*/
+
+    $_REQUEST['domain'] = domain_from_url($_REQUEST['return_url']);
+
+    require_once 'dirdb.php';
+    $db = new TradeDB();
+    $v->Register($db->Exists($_REQUEST['domain']), VT_IS_FALSE, "Already exist.");
+
+    if( $C['flag_req_site_name'] || !empty($_REQUEST['site_name']) )
+    {
+        $v->Register($_REQUEST['site_name'], VT_LENGTH_BETWEEN, "Valid Title between {$C['site_name_min']} and {$C['site_name_max']} chars.", array($C['site_name_min'], $C['site_name_max']));
+    }
+
+    if( $C['flag_req_nickname'] || !empty($_REQUEST['nickname']) )
+    {
+        $v->Register($_REQUEST['nickname'], VT_NOT_EMPTY, "Nickname fail.");
+    }
+
+    // Check blacklist
+    $_REQUEST['server_ip'] = gethostbyname($domain);
+    $_REQUEST['dns'] = gethostbyname($domain);
+    if( ($blacklisted = check_blacklist($_REQUEST)) !== false )
+    {
+        $v->SetError("Blacklisted." . (!empty($blacklisted[1]) ? ": " . $blacklisted[1] : ''));
+    }
+
+    if( !$v->Validate() )
+    {
+        echo '{"error": "' . implode(' ', $v->GetErrors()) . '"}';
+        exit;
+    }
+
+    $_REQUEST = array_merge($_REQUEST, unserialize(file_get_contents(FILE_NEW_TRADE_DEFAULTS)));
+    $password = $_REQUEST['password'] = get_random_password();
+
+    $t->AssignByRef('g_trade', $_REQUEST);
+
+    if( $v->Validate() )
+    {
+        trade_add($_REQUEST, true);
+
+        $_REQUEST['password'] = $password;
+
+        echo '{"result": "Trade added"}';
+        exit;
+    }
+}
