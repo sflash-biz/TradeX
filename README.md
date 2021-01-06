@@ -37,7 +37,7 @@ Sorry, but original TradeX script is morally obsolete and was not ready for prod
 - Updates and some screenshots you can found here: https://forums.unofficialjmbsupport.com/index.php?topic=381.0
 
 
-## Installation
+## Installation (Go to Manual Installation manual if dont want contact me)
 
 - Installation script located in install-script directory. (In this case you need have a key for domain, coz you need use my build from my servers. Try to convince me why I need it! But I'm glad to any script improvements, except typos.)
 - Html docs located now only on my server http://sflash.biz/sft-dist-pub/docs/ (sorry, but but this is most easy way to be updated)
@@ -45,6 +45,7 @@ Sorry, but original TradeX script is morally obsolete and was not ready for prod
 
 ## Manual Installation
 
+- Download script from this repo using Code -> **Download ZIP** and unpack ZIP archive.
 - Copy and raname **sft** dir to your domain root dir. You can rename it as you want.
 - Make files and dirs rights like in docs Installation manual or cd to your **sft** dir and run inside this commands:
 ```
